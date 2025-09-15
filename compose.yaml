@@ -5,7 +5,7 @@ services:
       - NODE_ENV=development
       context: backend
       target: development
-    command: npm run start-watch
+    # command: npm run start-watch
     environment:
       - DATABASE_DB=example
       - DATABASE_USER=root
@@ -14,8 +14,8 @@ services:
       - NODE_ENV=development
     ports:
       - 80:80
-      - 9229:9229
-      - 9230:9230
+      # - 9229:9229
+      # - 9230:9230 # These last 2 ports used for debugging??
     secrets:
       - db-password
     volumes:
@@ -29,9 +29,6 @@ services:
     depends_on:
       - db
   db:
-    # We use a mariadb image which supports both amd64 & arm64 architecture
-    # image: mariadb:10.6.4-focal
-    # If you really want to use MySQL, uncomment the following line
     image: mysql:8.4.6
     platform: linux/amd64
     command: --mysql-native-password=ON
@@ -45,19 +42,6 @@ services:
     environment:
       - MYSQL_DATABASE=example
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
-  frontend:
-    build:
-      context: frontend
-      target: development
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend/src:/code/src
-      - /code/node_modules
-    networks:
-      - public
-    depends_on:
-      - backend
 networks:
   public:
   private:

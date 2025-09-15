@@ -4,3 +4,79 @@ Mocha - A JavaScript test framework for Node.js programs.
 Chai - A BDD / TDD assertion library for node and the browser that can be
 delightfully paired with any javascript testing framework.
 
+Jest - Maybe for frontend?
+
+Standard name of Compose filename:
+https://docs.docker.com/compose/intro/compose-application-model/
+
+```
+your-project/
+├── backend/
+│   ├── src/  contains everything that makes your server-side application run.
+                These files are processed on the server and are not directly
+                accessible from the user's browser.
+│   │   ├── app.js       # Your main Express.js application file
+│   │   └── routes/      # Your server-side routing logic
+│   │   └── models/      # Your database interaction logic
+│   │
+│   ├── public/ The public/ folder is where you put all of your static files.
+
+These are assets that are intended to be served directly to the client's web
+browser without any server-side processing. Your Express.js server is
+configured to make these files publicly accessible.
+
+Static Assets: This is where you store files like:
+
+bootstrap.min.css: Your CSS stylesheets.
+
+bootstrap.bundle.min.js: Your JavaScript files.
+
+images/: Any images your website uses.
+
+index.html: A static HTML file, if you're not using a template engine like EJS.
+
+The purpose of the public/ folder is to act as the web-facing part of your
+application. When a user requests http://yourdomain.com/css/bootstrap.min.css,
+your Express.js server looks for that file in the public/ directory and sends
+it directly to the browser.
+
+│   │   ├── css/
+│   │   │   └── bootstrap.min.css
+│   │   ├── js/
+│   │   │   └── bootstrap.bundle.min.js
+│   │   └── index.html   # Your Bootstrap frontend files
+│   │
+│   ├── views/           # Optional: For your EJS templates
+│   │   └── index.ejs
+│   │
+│   ├── Dockerfile
+│   ├── package.json
+│   └── package-lock.json
+│
+├── db/
+│   └── password.txt     # Your database password file for Docker secrets
+│
+└── compose.yaml
+```
+
+-----
+
+### Key Takeaways from This Structure
+
+  * Single-Source of Truth: All your application code, both frontend
+  and backend, now lives under the **`backend/`** directory. This is the
+  hallmark of a monolithic application.
+  
+  * Docker Context: The `backend/` directory serves as the **build
+  context** for your `backend` service in `docker-compose.yml`. When Docker
+  builds the image, it will copy everything from this directory, including
+  your static `public` assets and `EJS` views.
+  
+  * Static Files: Your Bootstrap files are placed in a `public/`
+  directory, which your Express.js server will be configured to serve
+  as static assets.
+  
+  * No Separate Frontend: The `frontend/` folder is gone, as your
+  `docker-compose.yml` no longer needs a separate service to handle it.
+  Your single `backend` service is now responsible for everything.
+
