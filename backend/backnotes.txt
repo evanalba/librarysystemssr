@@ -9,12 +9,49 @@ Jest - Maybe for frontend?
 Standard name of Compose filename:
 https://docs.docker.com/compose/intro/compose-application-model/
 
+SETUP TOOLS:
+https://medium.com/@oliviarizona/eslint-recommended-7d3e6d5dc1aa
+
+https://www.reddit.com/r/node/comments/14jh6hz/do_you_use_eslintconfigairbnb_if_so_why_if_not_why/
+I prefer to use eslint:recommended + prettier:recommended instead.
+
+For clarity. As for devs/humans, it's easy to distinguish between a module
+file(.mjs) and a normal javascript file(.js)... because it's not always easy
+to determine even if you examine the code in the file.
+
+There are also performance benefits which gives you more reason to consider
+using it. V8(JavaScript engine that powers Google Chrome) recommends the use
+of .mjs but it still depends on your situation. If you want to know more of
+it's advantages, check https://v8.dev/features/modules#mjs
+
+**Knex.js library**
+A SQL query builder is a tool that helps you write SQL queries using JavaScript
+code instead of raw SQL strings. It provides a chainable, object-oriented
+interface for building queries.
+
+This approach has several benefits:
+
+Security: It protects against SQL injection attacks by automatically
+sanitizing input.
+
+Portability: You can use the same JavaScript code to generate SQL for
+different database types (e.g., MySQL, PostgreSQL, SQLite) by simply
+changing the configuration.
+
+Readability: It makes your code cleaner and easier to read and maintain,
+especially for complex queries.
+
+
 ```
 your-project/
 ├── backend/
-│   ├── src/  contains everything that makes your server-side application run.
+│   ├── src/  contains everything that makes your server-side application logic run.
                 These files are processed on the server and are not directly
                 accessible from the user's browser.
+                This is where your main Express.js file lives, along with your
+                routes, models, and other server-specific code. This keeps
+                your application's core logic separate from configuration
+                files and static assets.
 │   │   ├── app.js       # Your main Express.js application file
 │   │   └── routes/      # Your server-side routing logic
 │   │   └── models/      # Your database interaction logic
@@ -76,9 +113,7 @@ it directly to the browser.
   directory, which your Express.js server will be configured to serve
   as static assets.
   
-  * No Separate Frontend: The `frontend/` folder is gone, as your
-  `docker-compose.yml` no longer needs a separate service to handle it.
-  Your single `backend` service is now responsible for everything.
+  *  Your single `backend` service is now responsible for everything.
 
 
 The purpose of the **`views`** folder is to store the **templates** your web 
@@ -113,4 +148,6 @@ files in the `public` folder, which are sent to the client as-is.
   folder helps separate the application's **presentation logic** (how the
   page looks) from the **business logic** (how the data is processed). This
   makes your code more organized and easier to maintain.
+
+
 

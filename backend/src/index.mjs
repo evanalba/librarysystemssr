@@ -1,7 +1,7 @@
-const app = require("./server");
-const { port } = require("./config");
+import { listen } from "./server.mjs";
+import { port } from "./config.mjs";
 
-const server = app.listen(port, function() {
+const server = listen(port, function() {
   console.log("Webserver is ready");
 });
 

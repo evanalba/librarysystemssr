@@ -1,4 +1,4 @@
-const http = require("http");
+import { request as _request } from "http";
 
 const options = {
   timeout: 2000,
@@ -7,7 +7,7 @@ const options = {
   path: "/healthz" // must be the same as HEALTHCHECK in Dockerfile
 };
 
-const request = http.request(options, res => {
+const request = _request(options, res => {
   console.info("STATUS: " + res.statusCode);
   process.exitCode = res.statusCode === 200 ? 0 : 1;
   process.exit();

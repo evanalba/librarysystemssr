@@ -14,8 +14,8 @@ services:
       - NODE_ENV=development
     ports:
       - 80:80
-      # - 9229:9229
-      # - 9230:9230 # These last 2 ports used for debugging??
+      - 9229:9229
+      - 9230:9230
     secrets:
       - db-password
     volumes:
