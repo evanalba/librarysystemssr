@@ -1,6 +1,5 @@
 # Library Management System Server-side Rendering
-A library management system that uses server-side rendering. The system supports:
-
+A library management system that uses server-side rendering. (See [paper]())
 
 ## Table of Contents
 * [Software Stack](#Software-Stack)
@@ -13,8 +12,25 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
 ## Environment Setup
 1. Install [Docker](https://www.docker.com/)
 
+2. Clone this repository and navigate to it:
+    ```bash
+    git clone git@github.com:ChicoState/StaySafe.git
+    cd StaySafe
+    ```
+
+3. Build and start the containers.
+    ```bash
+    docker compose up 
+    ```
+
+4. Access the app via a web browser:
+    <!-- * Frontend at http://localhost:3000/
+    * Backend at http://localhost:8080/ -->
+
+
 ## Standards
-ECMAScript: [ES6 (2015)](https://262.ecma-international.org/6.0/)
-Style Guide: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
-Linter: [ESLint](https://eslint.org/)
-Code Formatter: [Prettier](https://prettier.io/)
+ECMAScript: [ES6 (2015)](https://262.ecma-international.org/6.0/)  
+Style Guide: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)  
+Linter: [ESLint](https://eslint.org/) (Using the recommended config from @eslint/js)  
+Code Formatter: [Prettier](https://prettier.io/)  
+Linter + Code Formatter in order to work together: [Eslint-config-prettier](https://github.com/prettier/eslint-config-prettier)

@@ -80,3 +80,37 @@ it directly to the browser.
   `docker-compose.yml` no longer needs a separate service to handle it.
   Your single `backend` service is now responsible for everything.
 
+
+The purpose of the **`views`** folder is to store the **templates** your web 
+application uses to render dynamic HTML. It is a key part of the server-side 
+rendering process in frameworks like Express.js.
+
+The content in this folder is not directly accessible to a user's web browser. 
+Instead, the server processes these templates, fills them with data, and then 
+sends the resulting HTML page to the client. This is in contrast to static 
+files in the `public` folder, which are sent to the client as-is.
+
+### Key Aspects of the `views` Folder
+
+  * **Template Engine**: The `views` folder works with a **template engine**, 
+  such as EJS (Embedded JavaScript). Your Express.js
+  server is configured to know which folder to look in for these files and
+  which engine to use to process them. For example, in an Express app, you
+  would set the view engine and views directory like this:
+
+    ```javascript
+    app.set('view engine', 'ejs');
+    app.set('views', path.join(__dirname, 'views'));
+    ```
+
+  * **Server-Side Rendering**: When a user makes a request to a route, your
+  server-side code fetches data (e.g., from a database), and then calls a
+  method like `res.render()`. This method takes the name of a file from your
+  `views` folder and passes the data to it. The template engine then merges
+  the data with the template to create a complete HTML file.
+
+  * **Separation of Concerns**: Storing templates in a dedicated `views`
+  folder helps separate the application's **presentation logic** (how the
+  page looks) from the **business logic** (how the data is processed). This
+  makes your code more organized and easier to maintain.
+
