@@ -1,4 +1,4 @@
-# Library Management System Server-side Rendering
+# Library Management System
 A library management system that uses server-side rendering. (See [paper]())
 
 ## Table of Contents
