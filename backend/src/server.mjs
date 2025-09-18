@@ -13,18 +13,28 @@ import express from "express";
 // do app logging to files in containers.
 import morgan from "morgan";
 
-// Allow us to write SQL queries using JavaScript code instead of raw SQL strings
-import { raw } from "./database.mjs";
+import ejs from "ejs"
+
+// Define the views directory (assuming your EJS templates are in a 'views' folder)
+// Note: When using ES modules, __dirname and __filename is not directly available.
+// You can get it using import.meta.url and path.dirname.
+import path from "path";
+import { fileURLToPath } from "url";
+
 
 const app = express();
 
 app.use(morgan("common"));
 
-app.get("/", (req, res, next) => {
-  raw("select VERSION() version")
-    .then(([rows, columns]) => rows[0])
-    .then((row) => res.json({ message: `Hello from MySQL ${row.version}` }))
-    .catch(next);
+app.set('view engine', 'ejs');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Tell Express where to find your views folder (templates)
+app.set('views', path.join(__dirname, '..', 'views'));
+
+app.get("/", (req, res) => {
+  // Express finds the file at /code/views/layouts/main.ejs to send to the client
+  res.render('layouts/main');
 });
 
 app.get("/healthz", (req, res) => {

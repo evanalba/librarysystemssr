@@ -56,39 +56,56 @@ your-project/
                 routes, models, and other server-specific code. This keeps
                 your application's core logic separate from configuration
                 files and static assets.
-│   │   ├── index.js       # Your main Express.js application file
+│   │   ├── index.mjs       # Your main backend server startup file in order to run in a Node.js environment
+│   │   ├── server.mjs       # Your main Express.js application file
 │   │   └── routes/      # Your server-side routing logic
 │   │   └── models/      # Your database interaction logic
 │   │
 │   ├── public/ The public/ folder is where you put all of your static files.
 
-These are assets that are intended to be served directly to the client's web
-browser without any server-side processing. Your Express.js server is
-configured to make these files publicly accessible.
+      These are assets that are intended to be served directly to the client's web
+      browser without any server-side processing. Your Express.js server is
+      configured to make these files publicly accessible.
 
-Static Assets: This is where you store files like:
+      Static Assets: This is where you store files like:
 
-bootstrap.min.css: Your CSS stylesheets.
+      bootstrap.min.css: Your CSS stylesheets.
 
-bootstrap.bundle.min.js: Your JavaScript files.
+      bootstrap.bundle.min.js: Your JavaScript files.
 
-images/: Any images your website uses.
+      images/: Any images your website uses.
 
-index.html: A static HTML file, if you're not using a template engine like EJS.
+      index.html: A static HTML file, if you're not using a template engine like EJS.
 
-The purpose of the public/ folder is to act as the web-facing part of your
-application. When a user requests http://yourdomain.com/css/bootstrap.min.css,
-your Express.js server looks for that file in the public/ directory and sends
-it directly to the browser.
+      The purpose of the public/ folder is to act as the web-facing part of your
+      application. When a user requests http://yourdomain.com/css/bootstrap.min.css,
+      your Express.js server looks for that file in the public/ directory and sends
+      it directly to the browser.
 
 │   │   ├── css/
 │   │   │   └── bootstrap.min.css
 │   │   ├── js/
 │   │   │   └── bootstrap.bundle.min.js
-│   │   └── index.html   # Your Bootstrap frontend files
+│   │   └── index.html   # CRIT: Your MAIN Bootstrap LAYOUT HTML frontend files
 │   │
-│   ├── views/           # Optional: For your EJS templates
-│   │   └── index.ejs
+│   ├── views/           #  For your EJS templates
+
+    In your views folder:
+
+      - layouts/: This folder contains your main, reusable layout files.
+      These are the "master" templates that define the overall HTML
+      structure of your website, including the <head> and <body> tags.
+      You might have a file like main.ejs here.
+
+      - partials/: This folder is for small, reusable components that
+      you'll include in multiple views. Think of things like your navigation
+      bar, header, and footer. This prevents you from copying and pasting
+      the same code everywhere. For example, _header.ejs or _footer.ejs.
+
+      - pages/: This is where you put your main page-specific files, such
+      as homepage.ejs, about.ejs, or contact.ejs. Each file here corresponds
+      to a specific page or route in your application.
+
 │   │
 │   ├── Dockerfile
 │   ├── package.json
@@ -155,3 +172,21 @@ files in the `public` folder, which are sent to the client as-is.
 
 
 
+**Main Layout and Partials**
+You can use main.ejs as your main primary layout file. This file will contain
+the shared HTML structure for your entire website, such as the <html>, <head>,
+and <body> tags. Inside this layout, you will then include partials for
+reusable components.
+
+Partials: These are small, reusable .ejs files for components like your
+navigation bar, header, and footer. This prevents you from having to copy
+and paste the same code on every page. For example, you might have
+partials/header.ejs and partials/footer.ejs.
+
+**Page-Specific Files**
+You will then create separate .ejs files for the unique content of each page.
+The server will render these specific files based on the route requested by the user.
+
+Homepage: A homepage.ejs file would contain the content for your home page.
+
+Edit Page: An edit.ejs file would contain the form and logic for editing an item.
