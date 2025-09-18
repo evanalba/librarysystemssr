@@ -41,6 +41,10 @@ changing the configuration.
 Readability: It makes your code cleaner and easier to read and maintain,
 especially for complex queries.
 
+Parameter binding is a method is the primary defense against SQL injection
+attacks. Instead of building a single string by concatenating a query with
+user input, you send two distinct pieces of information to the database: a
+static query template and the data values.
 
 ```
 your-project/
@@ -52,7 +56,7 @@ your-project/
                 routes, models, and other server-specific code. This keeps
                 your application's core logic separate from configuration
                 files and static assets.
-│   │   ├── app.js       # Your main Express.js application file
+│   │   ├── index.js       # Your main Express.js application file
 │   │   └── routes/      # Your server-side routing logic
 │   │   └── models/      # Your database interaction logic
 │   │

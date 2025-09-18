@@ -1,8 +1,10 @@
-import { listen } from "./server.mjs";
+// The "main" file that orchestrates how the server starts up and shuts down.
+
+import app from "./server.mjs";
 import { port } from "./config.mjs";
 
-const server = listen(port, function() {
-  console.log("Webserver is ready");
+const server = app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
 
 //

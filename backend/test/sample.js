@@ -1,15 +1,14 @@
-const chai = require("chai");
-const chaiHttp = require("chai-http");
+import { use, should, request } from "chai";
+import chaiHttp from "chai-http";
 
-const app = require("../src/server");
+import app from "../src/server.mjs";
 
-chai.use(chaiHttp);
-chai.should();
+use(chaiHttp);
+should();
 
 describe("API /healthz", () => {
   it("it should return 200", done => {
-    chai
-      .request(app)
+    request(app)
       .get("/healthz")
       .end((err, res) => {
         res.should.have.status(200);
@@ -20,8 +19,7 @@ describe("API /healthz", () => {
 
 describe("API /", () => {
   it("it should return Welcome message", done => {
-    chai
-      .request(app)
+    request(app)
       .get("/")
       .end((err, res) => {
         res.should.have.status(200);
