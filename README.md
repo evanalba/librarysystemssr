@@ -2,9 +2,22 @@
 A library management system that uses server-side rendering. (See [paper]())
 
 ## Table of Contents
+* [Accessibility](#Accessibility)
 * [Software Stack](#Software-Stack)
 * [Environment Setup](#Environment-Setup)
 * [Standards](#Standards)
+
+## Accessibility
+This application has been designed to conform to the Web Content Accessibility Guidelines.
+### Color Contrast Conformance
+
+We have assessed the primary color combination used in this project (Foreground: #FFFFFF on Background: #889E70) against the Web Content Accessibility Guidelines (WCAG) standards.
+
+| Element Type | WCAG Level AA | WCAG Level AAA |
+| :--- | :--- | :--- |
+| **Normal Text** | **Pass** | **Pass** |
+| **Large Text** | **Pass** | **Pass** |
+| **Graphical Objects and UI Components** | **Pass** | **N/A** |
 
 ## Software Stack
 Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN) 

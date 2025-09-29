@@ -5,7 +5,7 @@ services:
       - NODE_ENV=development
       context: backend
       target: development
-    # command: npm run start-watch
+    command: npm run start-watch
     environment:
       - DATABASE_DB=example
       - DATABASE_USER=root
@@ -13,16 +13,17 @@ services:
       - DATABASE_HOST=db
       - NODE_ENV=development
     ports:
-      - 80:80
-      - 9229:9229
-      - 9230:9230
+      - 80:80 # Application Port: Standard port where your Express Node.js 
+      # application is running inside the Docker container. 
+      # This is how users see the output of your code.
+      - 9229:9229 # Development Debugger Port: Used for debugging your 
+      # application while it's running with Nodemon
+      - 9230:9230 # Testing Debugger Port: To debugging your Mocha tests.
     secrets:
       - db-password
     volumes:
-      - ./backend/src:/code/src:ro
-      - ./backend/package.json:/code/package.json
-      - ./backend/package-lock.json:/code/package-lock.json
-      - back-notused:/opt/app/node_modules
+      - ./backend:/code
+      - back-node-modules:/code/node_modules 
     networks:
       - public
       - private
@@ -46,7 +47,7 @@ networks:
   public:
   private:
 volumes:
-  back-notused:
+  back-node-modules:
   db-data:
 secrets:
   db-password:

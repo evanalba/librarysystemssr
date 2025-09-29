@@ -1,10 +1,11 @@
 import express from 'express';
 
 const router = express.Router()
+const systemName = "Library Management System"
 
 router.get("/", (req, res) => {
-  // Express finds the file at /code/views/layouts/main.ejs to send to the client
-  res.render('layouts/main');
+  // Express finds the file in /code/views/layouts/ to send to the client
+  res.render("layouts/layout-main", {title: `Home | ${systemName}`});
 });
 
 router.get("/healthz", (req, res) => {

@@ -23,16 +23,19 @@ import errorHandler from "./middleware/error-handler.mjs";
 
 const app = express();
 
-app.use(morgan("common"));
-app.set('view engine', 'ejs');
+app.use(morgan("common")); // FUTURE: Add logging
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Tell Express where to find your views folder (templates)
-app.set('views', path.join(__dirname, '..', 'views'));
-app.use('/', router);
 
-// TODO: Add error handling
+app.use(express.static(path.join(__dirname, '..', 'public'))); 
+
+app.set("view engine", "ejs");
+
+// Tell Express where to find your views folder (templates)
+app.set("views", path.join(__dirname, "..", "views"));
+app.use("/", router);
+
 // CRIT: The error handler must be the last middleware loaded!
 app.use(errorHandler);
 

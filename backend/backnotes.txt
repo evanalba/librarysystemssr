@@ -1,3 +1,11 @@
+Color Palette:
+Foreground (Text): #FFFFFF (White)
+Background: #889E70 (Sage/Olive Green)
+
+Hypens vs Underscores for image names on website
+TDLR: Use Hypens
+https://webmasters.stackexchange.com/questions/127555/hypens-vs-underscores-for-image-names-on-website 
+
 Packages:
 Mocha - A JavaScript test framework for Node.js programs.
 
@@ -5,6 +13,45 @@ Chai - A BDD / TDD assertion library for node and the browser that can be
 delightfully paired with any javascript testing framework.
 
 Jest - Maybe for frontend?
+
+Nodemon - A tool that automatically restarts your Node.js application
+whenever it detects changes in your code, making live coding more efficient.
+By using nodemon, you can save time during development as it eliminates
+the need to manually stop and restart your server after each change.
+NOTE: Nodemon restarts the server, but that's only half of "live coding."
+
+Since you are using a server-side rendered application with Express and EJS, 
+any changes you make to your server-side code (Node/Express logic,
+EJS templates, etc.) require the server to restart to take effect.
+Usage: Instead of running your app with node app.js, you run it with nodemon
+app.js (or whatever your entry file is).
+
+This setup gives you a "live" development experience by automating the
+necessary server restarts for your backend and templating logic.
+
+For Client-Side Changes (Bootstrap & CSS)
+While Nodemon handles the server and EJS side, for a better experience with
+purely client-side code changes (like your Bootstrap styling or any frontend
+JavaScript), you might also consider an additional tool:
+
+BrowserSync: A utility that synchronizes file changes and interactions across
+multiple devices. You can configure it to watch for changes to your static
+assets (like your CSS files) and inject those changes directly into the
+browser without a full page refresh. Integrating it with an Express server
+can be slightly more involved than Nodemon, but it offers the fastest feedback
+loop for styling.
+
+CRIT: Integrating BrowserSync with a server-side rendered application in a 
+Dockerized environment can be complex. If the goal is simply live coding with
+minimal setup, you should stick with just Nodemon.
+
+The browser-sync-server.mjs file is the central piece of your new
+live-coding workflow. It replaces your simple index.mjs as the server
+startup file during development.
+This file's job is to start your Express server and then wrap it with
+BrowserSync so that static file changes can be injected without a full page
+reload.
+
 
 Standard name of Compose filename:
 https://docs.docker.com/compose/intro/compose-application-model/
@@ -190,3 +237,42 @@ The server will render these specific files based on the route requested by the 
 Homepage: A homepage.ejs file would contain the content for your home page.
 
 Edit Page: An edit.ejs file would contain the form and logic for editing an item.
+
+
+Individual pages then "inject" their specific content into a designated area of the layout file.
+
+he Purpose of Multiple Layouts
+You are right: the purpose of having two separate layout files—one minimal and one full-featured—is to serve different needs within the same application.
+
+- main.ejs (The Minimal BASE Layout): This would be used for pages that are self-contained and don't require the full application UI. This could include pages like:
+
+  - Login or Signup pages: These need to be simple and distraction-free.
+
+  - Password recovery forms: A clean, single-purpose page.
+
+  - Error pages: A page that shows a simple error message without the full navigation.
+
+Using a minimal layout for these pages keeps the code cleaner, reduces unnecessary file loads (like extra CSS or JavaScript), and improves performance.
+
+- layout-main.ejs (The Common BASE Layout): This is the standard layout for the main parts of your application. It includes all the common components that most pages share, such as:
+
+  - A full navigation sidebar.
+
+  - A header with a user profile or notifications.
+
+  - A footer.
+
+  - All the necessary JavaScript libraries for the application's functionality.
+
+This approach ensures a consistent user experience and avoids repeating the same code on every page that needs the full UI.
+
+
+A common practice in web development is to separate the BASE minimal layout page (e.g. main.ejs) from the
+content page. This is often achieved using a base template that contains the
+shared elements of a website,  such as:
+
+- HTML <head> section (meta tags, CSS links)
+- Header and navigation bars
+- Footer
+
+To eventually, have a separate BASE layout page + separate content page united as one using Express.js
