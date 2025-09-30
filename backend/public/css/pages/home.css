@@ -2,23 +2,14 @@
   display: block;
   margin: 2em auto auto auto;
   max-width: 25em;
-  width: 100%;
 }
 
-.custom-search-btn {
-    background-color: #889E70;
-    color: #000000;
-    /* pointer-events: none; */
-
+.custom-search-btn, .custom-search-btn:hover {
+  background-color: #889e70 !important;
+  border: 0;
+  transition: none;
 }
 
 .form-control:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
-
-/* .btn:hover {
-    color: #000000;
-    background-color: #000000;
-} */
-
-/* .custom-search-btn:hover {} */
