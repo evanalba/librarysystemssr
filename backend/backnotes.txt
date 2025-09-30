@@ -146,8 +146,8 @@ your-project/
 
       - partials/: This folder is for small, reusable components that
       you'll include in multiple views. Think of things like your navigation
-      bar, header, and footer. This prevents you from copying and pasting
-      the same code everywhere. For example, _header.ejs or _footer.ejs.
+      bar, and user error messages. This prevents you from copying and pasting
+      the same code everywhere.
 
       - pages/: This is where you put your main page-specific files, such
       as homepage.ejs, about.ejs, or contact.ejs. Each file here corresponds

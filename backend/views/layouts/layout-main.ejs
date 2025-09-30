@@ -4,16 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
-      <% if (typeof title !=="undefined" ) { %> <%= title %> <% } else { %>
-      Library Management System <% } %>
+      <% if (typeof page !== "undefined" && title) { %> <%= title %> <% } else {
+      %> Library Management System <% } %>
     </title>
-    <link rel="stylesheet" href="/css/dogs.css" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
+      href="/bootstrap-5.3.8/dist/css/bootstrap.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <% if (typeof page !== "undefined" && cssPage) { %>
+    <link rel="stylesheet" href="/css/pages/<%= cssPage %>" />
+    <% } %>
   </head>
 
   <body>
@@ -46,7 +51,8 @@
         </div>
       </div>
     </nav>
-    <p>Hello, world!</p>
+    <%- typeof page !== "undefined" && page ? include(page) :
+    include("../partials/error.ejs") %>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
