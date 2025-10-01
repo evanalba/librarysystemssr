@@ -11,7 +11,7 @@ A library management system that uses server-side rendering. (See [paper]())
 This application has been designed to conform to the Web Content Accessibility Guidelines.
 
 ### Color Contrast Conformance
-We have assessed the primary color combination used in this project (Foreground: #FFFFFF on Background: #889E70) against the Web Content Accessibility Guidelines (WCAG) standards.
+We have assessed the primary color combination used in this project (Foreground: #000000 on Background: #889E70) against the Web Content Accessibility Guidelines (WCAG) standards.
 
 | Element Type | WCAG Level AA | WCAG Level AAA |
 | :--- | :--- | :--- |
