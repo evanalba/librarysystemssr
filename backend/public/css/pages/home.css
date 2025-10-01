@@ -10,10 +10,18 @@
   border-color: black;
 }
 
+.custom-search-input::placeholder {
+  color: black;
+}
+
 .custom-search-btn, .custom-search-btn:hover {
   background-color: #889e70 !important;
   border: 0;
   transition: none;
+}
+
+.mag-color {
+  color: black;
 }
 
 .book-list {
