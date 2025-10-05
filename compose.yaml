@@ -7,7 +7,7 @@ services:
       target: development
     command: npm run start-watch
     environment:
-      - DATABASE_DB=example
+      - DATABASE_DB=librarysystemssr
       - DATABASE_USER=root
       - DATABASE_PASSWORD=/run/secrets/db-password
       - DATABASE_HOST=db
@@ -34,6 +34,8 @@ services:
     platform: linux/amd64
     command: --mysql-native-password=ON
     restart: always
+    ports:
+      - 3307:3306
     secrets:
       - db-password
     volumes:
@@ -41,7 +43,7 @@ services:
     networks:
       - private
     environment:
-      - MYSQL_DATABASE=example
+      - MYSQL_DATABASE=librarysystemssr
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
 networks:
   public:

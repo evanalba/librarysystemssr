@@ -5,10 +5,9 @@
 import knex from "knex";
 import { database } from "./config.mjs";
 
-const dbConfig = {
+const myknex = knex({
   client: "mysql2",
   connection: database,
-};
+});
 
-const db = knex(dbConfig);
-export const raw = (sql) => db.raw(sql);
+export default myknex;

@@ -1,12 +1,18 @@
-import express from 'express';
+import express from "express";
+import myknex from "../database.mjs";
+import errorHandler from "../middleware/error-handler.mjs";
 
-const router = express.Router()
-const systemName = " | Library Management System"
-const pagesDir = "../pages/"
+const router = express.Router();
+const systemName = " | Library Management System";
+const pagesDir = "../pages/";
 
 router.get("/", (req, res) => {
   // Express finds the file in /code/views/layouts/ to send to the client
-  res.render("layouts/layout-main", {title: `Home${systemName}`, cssPage: "home.css", page: `${pagesDir}home/home.ejs`});
+  res.render("layouts/layout-main", {
+    title: `Home${systemName}`,
+    cssPage: "home.css",
+    page: `${pagesDir}home/home.ejs`,
+  });
 });
 
 router.get("/healthz", (req, res) => {
@@ -14,6 +20,35 @@ router.get("/healthz", (req, res) => {
   // you should return 200 if healthy, and anything else will fail
   // if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
   res.send("I am happy and healthy\n");
+});
+
+router.get("/booklist", async (req, res) => {
+  let books = [];
+  try {
+    books = await myknex("books").select([
+      "id",
+      "title",
+      "authors",
+      "publication_year",
+      "isbn",
+      "available_copies",
+      "image_url",
+    ]);
+
+    res.render("layouts/layout-main", {
+      title: `Booklist${systemName}`,
+      cssPage: "booklist.css",
+      page: `${pagesDir}booklist/booklist.ejs`,
+      books: books,
+    });
+  } catch (error) {
+    res.render("layouts/layout-main", {
+      title: `Booklist${systemName}`,
+      cssPage: "booklist.css",
+      page: `${pagesDir}booklist/booklist.ejs`,
+      books: [],
+    });
+  }
 });
 
 export default router;

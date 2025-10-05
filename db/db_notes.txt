@@ -1,0 +1,176 @@
+The MySQL Docker entrypoint executes the initialization scripts **sequentially by name order**.
+
+When the MySQL container starts for the first time, its initialization script
+processes all files found in the `/docker-entrypoint-initdb.d/` directory
+(which you mounted your local `db/init` folder to) in **alphabetical
+(lexicographical) order**.
+
+### How Naming Ensures Order
+
+You must use a numerical prefix in the filename to guarantee the execution
+sequence:
+
+1.  **`01_schema.sql`** is executed first. This is crucial because
+you **must create the tables (the schema) before you can insert data into them**.
+2.  **`02_data.sql`** is executed second. This script relies on the tables
+having been created in the first step.
+3.  Any other files, like `03_procedures.sql` (for stored procedures),
+would be executed next, continuing the sequential flow.
+
+By prefixing your files with numbers (`01_`, `02_`, etc.), you ensure the
+database initialization process is reliable and repeatable every time a new
+volume is created. 
+
+
+The Primary Key is used constantly by the database for indexing
+and establishing relationships (Foreign Keys).
+
+Fixed Size: An INT is typically 4 bytes and is a fixed size. The database
+can read, compare, and cache these small, uniform values extremely quickly.
+
+Variable Size: An ISBN is a VARCHAR(17), which is a variable-length string
+that is much larger (up to 17 bytes) and slower to process and compare.
+
+Indexing Efficiency: When you link the books table to another table (like
+loans), the Foreign Key in the loans table will use the Primary Key type.
+If you use the INT ID, the loans table is small and efficient. If you use
+the VARCHAR(17) ISBN, the loans table grows larger and slower for every
+single loan record.
+
+CRIT: Primary Keys should be stable and reliable throughout the record's life.
+
+CRIT: Potential for Change: While ISBNs are usually stable, they can
+occasionally change (e.g., when a book is re-released under a new format, or
+if an administrative correction is needed). If the Primary Key changes, every
+table referencing that book via a Foreign Key (e.g., thousands of entries
+in the loans history) would need to be updated, which is costly and risky.
+
+For IMAGE URL size use varchar(2048):
+https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers#417184
+
+Edge: Edge permits a maximum URL length of 2083 characters, although the
+path portion of the URL cannot exceed 2048 characters.
+
+https://stackoverflow.com/questions/219569/best-database-field-type-for-a-url
+
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+// Playground: https://dbdiagram.io/d
+
+use librarysystemssr;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,       -- Set size for cryptographic hash
+    role VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    authors VARCHAR(500) NOT NULL,
+    publication_year YEAR NOT NULL,
+    isbn VARCHAR(17) UNIQUE NOT NULL,
+    description TEXT,
+    page_count INT NOT NULL,
+    available_copies INT NOT NULL DEFAULT 0,
+    total_copies INT NOT NULL DEFAULT 0,
+    image_url VARCHAR(2083)
+);
+
+CREATE TABLE loans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    -- Foreign Key to the users table (Who borrowed the book)
+    user_id INT NOT NULL,
+    
+    -- Foreign Key to the books table (Which book title was borrowed)
+    book_id INT NOT NULL,
+    
+    loan_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    return_date DATE, -- Allowed to be NULL for active loans
+    
+    -- Foreign Key Constraints: ON DELETE RESTRICT prevents deleting a 
+    -- user or book if an active loan record exists.
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE RESTRICT
+);
+
+10 Books:
+1. 
+title VARCHAR(255) NOT NULL, The practice of programming
+authors VARCHAR(500) NOT NULL, Brian W. Kernighan, Rob Pike
+publication_year YEAR NOT NULL, 1999
+isbn VARCHAR(17) UNIQUE NOT NULL, 9780201615869
+description TEXT, https://search.worldcat.org/title/40595608            
+page_count INT NOT NULL, [279]
+available_copies INT NOT NULL DEFAULT 0, [1]
+total_copies INT NOT NULL DEFAULT 0, [2]
+image_url VARCHAR(2083) https://m.media-amazon.com/images/I/71a9H3K9cgL._SY522_.jpg
+
+2.
+title VARCHAR(255) NOT NULL, No ordinary genius : the illustrated Richard Feynman
+authors VARCHAR(500) NOT NULL, Richard P. Feynman, Christopher Sykes
+publication_year YEAR NOT NULL, 1994
+isbn VARCHAR(17) UNIQUE NOT NULL, 9780393036213
+description TEXT, https://search.worldcat.org/title/28927186               
+page_count INT NOT NULL, [272]
+available_copies INT NOT NULL DEFAULT 0, [1]
+total_copies INT NOT NULL DEFAULT 0, [1]
+image_url VARCHAR(2083)
+
+3. 
+title VARCHAR(255) NOT NULL, Gidget
+authors VARCHAR(500) NOT NULL, Frederick Kohner
+publication_year YEAR NOT NULL, 2001
+isbn VARCHAR(17) UNIQUE NOT NULL, 9780425179628
+description TEXT, https://search.worldcat.org/title/46683848           
+page_count INT NOT NULL, [154]
+available_copies INT NOT NULL DEFAULT 0, [1]
+total_copies INT NOT NULL DEFAULT 0, [1]
+image_url VARCHAR(2083)
+
+4.
+title VARCHAR(255) NOT NULL,
+authors VARCHAR(500) NOT NULL,
+publication_year YEAR NOT NULL,
+isbn VARCHAR(17) UNIQUE NOT NULL,
+description TEXT,               
+page_count INT NOT NULL,
+available_copies INT NOT NULL DEFAULT 0,
+total_copies INT NOT NULL DEFAULT 0
+
+5.
+title VARCHAR(255) NOT NULL,
+authors VARCHAR(500) NOT NULL,
+publication_year YEAR NOT NULL,
+isbn VARCHAR(17) UNIQUE NOT NULL,
+description TEXT,               
+page_count INT NOT NULL,
+available_copies INT NOT NULL DEFAULT 0,
+total_copies INT NOT NULL DEFAULT 0
+
+1. 
+INSERT INTO books (
+    title, 
+    authors, 
+    publication_year, 
+    isbn, 
+    description, 
+    page_count, 
+    available_copies, 
+    total_copies, 
+    image_url
+) VALUES (
+    'The Practice of Programming',
+    'Brian W. Kernighan, Rob Pike',
+    1999,
+    '9780201615869',
+    'https://search.worldcat.org/title/40595608', -- Note: Storing a search link in the description field
+    279,
+    1,
+    2,
+    'https://m.media-amazon.com/images/I/71a9H3K9cgL._SY522_.jpg'
+);
