@@ -76,4 +76,12 @@ router.get("/books/:id", async (req, res, next) => {
   }
 });
 
+router.get("/login", async (req, res) => {
+  res.render("layouts/main", {
+    title: `Home${systemName}`,
+    cssPage: "login.css",
+    page: `${pagesDir}login/login.ejs`,
+  });
+});
+
 export default router;

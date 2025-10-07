@@ -1,5 +1,3 @@
-@import "./bootstrap.scss";
-
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
@@ -11,5 +9,8 @@ $spacers: (
   84: $spacer * 21,
 ) !default;
 
-
 $primary: #0250C5 !default;
+
+$border-radius: 0;
+
+@import "./bootstrap.scss";
