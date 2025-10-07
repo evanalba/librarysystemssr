@@ -106,7 +106,7 @@ publication_year YEAR NOT NULL, 1999
 isbn VARCHAR(17) UNIQUE NOT NULL, 9780201615869
 description TEXT, https://search.worldcat.org/title/40595608            
 page_count INT NOT NULL, [279]
-available_copies INT NOT NULL DEFAULT 0, [1]
+available_copies INT NOT NULL DEFAULT 0, [2]
 total_copies INT NOT NULL DEFAULT 0, [2]
 image_url VARCHAR(2083) https://m.media-amazon.com/images/I/71a9H3K9cgL._SY522_.jpg
 
@@ -119,7 +119,7 @@ description TEXT, https://search.worldcat.org/title/28927186
 page_count INT NOT NULL, [272]
 available_copies INT NOT NULL DEFAULT 0, [1]
 total_copies INT NOT NULL DEFAULT 0, [1]
-image_url VARCHAR(2083)
+image_url VARCHAR(2083) https://coverart.oclc.org/ImageWebSvc/oclc/+-+13627437_140.jpg?allowDefault=false&client=WorldcatOrgUI
 
 3. 
 title VARCHAR(255) NOT NULL, Gidget
@@ -130,17 +130,18 @@ description TEXT, https://search.worldcat.org/title/46683848
 page_count INT NOT NULL, [154]
 available_copies INT NOT NULL DEFAULT 0, [1]
 total_copies INT NOT NULL DEFAULT 0, [1]
-image_url VARCHAR(2083)
+image_url VARCHAR(2083) https://coverart.oclc.org/ImageWebSvc/oclc/+-+39383119_140.jpg?allowDefault=false&client=WorldcatOrgUI
 
 4.
-title VARCHAR(255) NOT NULL,
-authors VARCHAR(500) NOT NULL,
-publication_year YEAR NOT NULL,
-isbn VARCHAR(17) UNIQUE NOT NULL,
-description TEXT,               
-page_count INT NOT NULL,
-available_copies INT NOT NULL DEFAULT 0,
-total_copies INT NOT NULL DEFAULT 0
+title VARCHAR(255) NOT NULL, Modern graph theory
+authors VARCHAR(500) NOT NULL, Béla Bollobás
+publication_year YEAR NOT NULL, 1998
+isbn VARCHAR(17) UNIQUE NOT NULL, 9780387984919
+description TEXT, "This book is an in-depth account of graph theory; it reflects the current state of the subject and emphasizes connections with other branches of pure mathematics. The volume grew out of the author's earlier book, Graph Theory - An Introductory Course, but its length is well over twice that of its predecessor, allowing it to reveal many new developments in the subject. Recognizing that graph theory is one of several courses competing for the attention of a student, the book contains extensive descriptive passages designed to convey the flavor of the subject and to arouse interest."--Jacket         
+page_count INT NOT NULL, [394]
+available_copies INT NOT NULL DEFAULT 0, [0]
+total_copies INT NOT NULL DEFAULT 0, [1]
+image_url VARCHAR(2083) https://coverart.oclc.org/ImageWebSvc/oclc/+-+99566938_140.jpg?allowDefault=false&client=WorldcatOrgUI
 
 5.
 title VARCHAR(255) NOT NULL,
@@ -150,7 +151,8 @@ isbn VARCHAR(17) UNIQUE NOT NULL,
 description TEXT,               
 page_count INT NOT NULL,
 available_copies INT NOT NULL DEFAULT 0,
-total_copies INT NOT NULL DEFAULT 0
+total_copies INT NOT NULL DEFAULT 0,
+image_url VARCHAR(2083)
 
 1. 
 INSERT INTO books (
@@ -168,9 +170,84 @@ INSERT INTO books (
     'Brian W. Kernighan, Rob Pike',
     1999,
     '9780201615869',
-    'https://search.worldcat.org/title/40595608', -- Note: Storing a search link in the description field
+    '"Brian Kernighan and Rob Pike have written The Practice of Programming to help make individual programmers more effective and productive." "The practice of programming is more than just writing code. Programmers must also assess tradeoffs, choose among design alternatives, debug and test, improve performance, and maintain software written by themselves and others. At the same time, they must be concerned with issues like compatibility, robustness, and reliability, while meeting specifications." "The Practice of Programming covers all these topics, and more. This book is full of practical advice and real-world examples in C, C++, Java, and a variety of special-purpose languages."--Jacket', -- Note: Storing a search link in the description field
     279,
-    1,
-    2,
-    'https://m.media-amazon.com/images/I/71a9H3K9cgL._SY522_.jpg'
+    3,
+    3,
+    'https://coverart.oclc.org/ImageWebSvc/oclc/+-+35104059_140.jpg?allowDefault=false&client=WorldcatOrgUI'
 );
+
+2.
+INSERT INTO books (
+    title, 
+    authors, 
+    publication_year, 
+    isbn, 
+    description, 
+    page_count, 
+    available_copies, 
+    total_copies, 
+    image_url
+) VALUES (
+    'No ordinary genius : the illustrated Richard Feynman',
+    'Richard P. Feynman, Christopher Sykes',
+    1994,
+    '9780393036213',
+    'If Richard Feynman had not existed it would not be possible to create him. The most extraordinary scientist of his time, a unique combination of dazzling intellect and touching simplicity, Feynman had a passion for physics that was merely the Nobel Prize-winning part of an immense love of life and everything it could offer. He was hugely irreverent and always completely honest - with himself, with his colleagues, and with nature. "People say to me, \'Are you looking for the ultimate laws of physics?\' No, I\'m not. I\'m just looking to find out more about the world, and if it turns out there is a simple ultimate law that explains everything, so be it. That would be very nice to discover. If it turns out it\'s like an onion with millions of layers, and we\'re sick and tired of looking at layers, then that\'s the way it is ... My interest in science is to simply find out more about the world, and the more I find out the better it is. I like to find out."',
+    272,
+    1,
+    1,
+    'https://coverart.oclc.org/ImageWebSvc/oclc/+-+13627437_140.jpg?allowDefault=false&client=WorldcatOrgUI'
+);
+
+3.
+INSERT INTO books (
+    title, 
+    authors, 
+    publication_year, 
+    isbn, 
+    description, 
+    page_count, 
+    available_copies, 
+    total_copies, 
+    image_url
+) VALUES (
+    'Gidget',
+    'Frederick Kohner',
+    2001,
+    '9780425179628',
+    'The classic novel of 1950's American youth is back in print with rare photos.',
+    154,
+    2,
+    2,
+    'https://coverart.oclc.org/ImageWebSvc/oclc/+-+39383119_140.jpg?allowDefault=false&client=WorldcatOrgUI'
+);
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM books where publication_year = 1994;
+
+select * from books;
+
+4.
+INSERT INTO books (
+    title, 
+    authors, 
+    publication_year, 
+    isbn, 
+    description, 
+    page_count, 
+    available_copies, 
+    total_copies, 
+    image_url
+) VALUES (
+    'Modern graph theory',
+    'Béla Bollobás',
+    1998,
+    '9780387984919',
+    '"This book is an in-depth account of graph theory; it reflects the current state of the subject and emphasizes connections with other branches of pure mathematics. The volume grew out of the author''s earlier book, Graph Theory - An Introductory Course, but its length is well over twice that of its predecessor, allowing it to reveal many new developments in the subject. Recognizing that graph theory is one of several courses competing for the attention of a student, the book contains extensive descriptive passages designed to convey the flavor of the subject and to arouse interest."--Jacket',
+    394,
+    1,
+    1,
+    'https://coverart.oclc.org/ImageWebSvc/oclc/+-+99566938_140.jpg?allowDefault=false&client=WorldcatOrgUI'
+);
+

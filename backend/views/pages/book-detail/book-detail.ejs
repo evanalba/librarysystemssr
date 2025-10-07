@@ -1,0 +1,62 @@
+<main class="book-detail-container">
+  <a href="/booklist" class="back-link"><b>&larr; Back to Book List</b></a>
+
+  <article>
+    <header>
+      <h2 class="book-header"><%= book.title %></h2>
+      <p class="authors">by <%= book.authors %></p>
+    </header>
+
+    <section class="book-content-grid">
+      <div class="book-cover">
+        <img
+          src="<%= book.image_url || '/images/default-cover.jpg' %>"
+          alt="Cover for <%= book.title %>"
+          width="200"
+          height="250"
+        />
+      </div>
+
+      <section>
+        <h4 class="book-details">Details</h4>
+
+        <dl class="info-list">
+          <dt>ISBN:</dt>
+          <dd><%= book.isbn %></dd>
+
+          <dt>Publication Year:</dt>
+          <dd><%= book.publication_year %></dd>
+
+          <dt>Page Count:</dt>
+          <dd><%= book.page_count %></dd>
+
+          <dt>Available Copies:</dt>
+          <dd><%= book.available_copies %></dd>
+
+          <dt>Total Copies:</dt>
+          <dd><%= book.total_copies %></dd>
+        </dl>
+
+        <section class="loan-status">
+          <% if (book.available_copies > 0) { %>
+          <p class="loan-status-p">
+            Status: <span class="available">Available</span>
+          </p>
+          <button type="button" class="btn btn-primary">Check Out</button>
+          <% } else { %>
+          <p class="loan-status-p">
+            Status: <span class="unavailable">Currently Loaned Out</span>
+          </p>
+          <% } %>
+        </section>
+      </section>
+    </section>
+
+    <section>
+      <h4 class="book-description-header">Description</h4>
+      <p class="book-description-p">
+        <%= book.description || "No description available." %>
+      </p>
+    </section>
+  </article>
+</main>

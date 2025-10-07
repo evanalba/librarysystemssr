@@ -51,4 +51,29 @@ router.get("/booklist", async (req, res) => {
   }
 });
 
+router.get("/books/:id", async (req, res, next) => {
+  const bookId = req.params.id;
+
+  try {
+    const book = await myknex("books")
+      .where("id", bookId)
+      .first();
+
+    if (!book) {
+      const err = new Error("Book not found");
+      err.status = 404;
+      return next(err);
+    }
+
+    res.render("layouts/layout-main", {
+      title: `${book.title}${systemName}`,
+      cssPage: "book-detail.css",
+      page: `${pagesDir}book-detail/book-detail.ejs`,
+      book: book,
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 export default router;

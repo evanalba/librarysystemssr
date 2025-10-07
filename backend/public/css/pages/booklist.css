@@ -1,3 +1,16 @@
-.book-cover {
-  width: 50px;
+.no-books {
+  text-align: center;
 }
+
+.list-head {
+  text-align: center;
+}
+
+.available {
+  color: #186329;
+}
+
+.unavailable {
+  color: #A91E2C;
+}
+

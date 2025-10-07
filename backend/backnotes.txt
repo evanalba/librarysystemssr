@@ -281,3 +281,5 @@ CRIT: Creating a simple custom.scss file is the industry-standard, clean,
 and maintainable way to customize any Sass framework.
 
 sass public/bootstrap-5.3.8/scss/custom.scss:public/bootstrap-5.3.8/dist/css/custom-bootstrap.css
+
+TODO: Make Bootstrap buttons accessible
