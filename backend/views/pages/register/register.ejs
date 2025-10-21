@@ -1,6 +1,6 @@
 <a href="/" class="back-link">&larr; Back to Home</a>
-<main class="login-container">
-  <form action="">
+<main class="register-container">
+  <form action="/register" method="POST"">
     <div class="form-floating mb-3">
       <input
         type="username"
@@ -21,7 +21,14 @@
       />
       <label for="floatingPassword">Password</label>
     </div>
-    <button class="btn btn-primary w-100 mb-3" type="submit">Sign in</button>
-    <p>Not registered? <a href="/register">Register</a></p>
+    <div class="form-floating mb-3">
+      <select class="form-select" aria-label="Default select example" name="role">
+        <option selected>Please choose an option</option>
+        <option value="patron">Patron</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <button class="btn btn-primary w-100 mb-3" type="submit">Register</button>
+    <p>Have an account? <a href="/login">Sign In</a></p>
   </form>
 </main>

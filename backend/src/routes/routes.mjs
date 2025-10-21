@@ -1,6 +1,7 @@
 import express from "express";
 import myknex from "../database.mjs";
 import errorHandler from "../middleware/error-handler.mjs";
+import { registerUser } from "../controllers/user-controller.mjs";
 
 const router = express.Router();
 const systemName = " | Library Management System";
@@ -82,6 +83,31 @@ router.get("/login", async (req, res) => {
     cssPage: "login.css",
     page: `${pagesDir}login/login.ejs`,
   });
+});
+
+// router.post("/login", async (req, res, next)) => {
+//   try {
+//     // sd
+//   } catch (error) {
+//     return next(error);
+//   }
+// }
+
+router.get("/register", async (req, res) => {
+  res.render("layouts/main", {
+    title: `Home${systemName}`,
+    cssPage: "register.css",
+    page: `${pagesDir}register/register.ejs`,
+  });
+});
+
+router.post("/register", async (req, res, next) => {
+  try {
+    await registerUser(req.body.username, req.body.password, req.body.role);
+    res.redirect("/login")
+  } catch (error) {
+    return next(error);
+  }
 });
 
 export default router;

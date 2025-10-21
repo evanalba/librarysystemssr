@@ -282,4 +282,24 @@ and maintainable way to customize any Sass framework.
 
 sass public/bootstrap-5.3.8/scss/custom.scss:public/bootstrap-5.3.8/dist/css/custom-bootstrap.css
 
-TODO: Make Bootstrap buttons accessible
+The controllers folder is a directory used in software development,
+particularly within web frameworks that follow the
+Model-View-Controller (MVC) architectural pattern.
+
+In the context of your Node.js/Express project, the controllers folder houses
+the files responsible for the application logic and managing the flow of
+data between the front-end and the database.
+
+## user-controller.mjs ##
+Implies Responsibility.
+Create, Read, Update, Delete (CRUD) operations for the User resource,
+plus login/logout.	Standard convention (MVC pattern). It tells any
+developer that this file handles all application logic for the User resource.
+
+
+However, you have placed the body parser middleware after your routes are
+loaded, which means Express processes the routes before it tries to read
+the request body, leaving req.body as undefined.
+
+In Express, middleware is executed in the order it is defined.
+

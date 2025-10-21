@@ -15,9 +15,13 @@
   },
   "nodemonConfig": {
     "ext": "js, mjs, json, ejs",
-    "watch": ["src", "views"]
+    "watch": [
+      "src",
+      "views"
+    ]
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "ejs": "^3.1.10",
     "express": "^4.17.1",
     "knex": "^0.95.11",

@@ -1,3 +1,5 @@
+@import "./bootstrap.scss";
+
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
@@ -13,4 +15,7 @@ $primary: #0250C5 !default;
 
 $border-radius: 0;
 
-@import "./bootstrap.scss";
+.form-floating > .form-select {
+  padding-top: 0;
+  padding-bottom: 0;
+}

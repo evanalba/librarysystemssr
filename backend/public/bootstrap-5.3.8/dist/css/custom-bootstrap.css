@@ -12250,5 +12250,9 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.form-floating > .form-select {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
 /*# sourceMappingURL=custom-bootstrap.css.map */
