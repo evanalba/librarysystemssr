@@ -9,11 +9,9 @@ export async function registerUser(username, password, role) {
     await myknex("users").insert({
       username: username,
       password: hashedPassword,
-      role: role
-    })
-
-  } catch (e) {
-    console.error("Error during user registration:", e.message);
-    throw e;
+      role: role,
+    });
+  } catch {
+    throw new Error("User with that username already exists. Please choose another.");
   }
 }

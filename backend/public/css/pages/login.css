@@ -17,4 +17,24 @@ body {
 .login-container {
   background-color: white;
   padding: 30px 30px 0 30px;
+  width: 100%;
+}
+
+@media screen and (min-width: 501px) {
+  .login-container {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 772px) {
+  .login-container {
+    max-width: 695px;
+  }
+}
+
+.register-success {
+  background-color: #d4edda;
+  color: #155624;
+  margin-bottom: 20px;
+  padding: 15px;
 }

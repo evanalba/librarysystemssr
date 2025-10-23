@@ -3,6 +3,10 @@ import myknex from "../database.mjs";
 import errorHandler from "../middleware/error-handler.mjs";
 import { registerUser } from "../controllers/user-controller.mjs";
 
+// Server-side Validation for Forms
+import { validationResult } from "express-validator";
+import { registerValidationRules } from "../validation/auth.mjs";
+
 const router = express.Router();
 const systemName = " | Library Management System";
 const pagesDir = "../pages/";
@@ -56,9 +60,7 @@ router.get("/books/:id", async (req, res, next) => {
   const bookId = req.params.id;
 
   try {
-    const book = await myknex("books")
-      .where("id", bookId)
-      .first();
+    const book = await myknex("books").where("id", bookId).first();
 
     if (!book) {
       const err = new Error("Book not found");
@@ -78,10 +80,13 @@ router.get("/books/:id", async (req, res, next) => {
 });
 
 router.get("/login", async (req, res) => {
+  const successMsg = req.flash("success");
+
   res.render("layouts/main", {
     title: `Home${systemName}`,
     cssPage: "login.css",
     page: `${pagesDir}login/login.ejs`,
+    successMsg: successMsg.length > 0 ? successMsg[0] : null,
   });
 });
 
@@ -94,30 +99,35 @@ router.get("/login", async (req, res) => {
 // }
 
 // TODO
-// 2. Add security on client and server side
+// 1. Add Fail Flashes for Login
+// 2. Add security on client and server side Login
 // When you login into to edit a book, it takes us to book list as a admin.
 
 router.get("/register", async (req, res) => {
-  const errorMsg = req.flash('error');
+  const errorMsg = req.flash("error");
 
   res.render("layouts/main", {
     title: `Home${systemName}`,
     cssPage: "register.css",
     page: `${pagesDir}register/register.ejs`,
-    errorMsg: errorMsg.length > 0 ? errorMsg[0] : null
+    errorMsg: errorMsg.length > 0 ? errorMsg[0] : null,
   });
 });
 
-router.post("/register", async (req, res) => {
-  try {
-    await registerUser(req.body.username, req.body.password, req.body.role);
-    res.redirect("/login");
+router.post("/register", registerValidationRules, async (req, res) => {
+  const errors = validationResult(req);
 
-    // req.flash('success', 'Registration successful! Proceed to login.')
-    // res.send(req.flash('success', 'Registration successful! Proceed to login.'));
-    // res.send(JSON.stringify(req.flash('test')));
-  } catch {
-    req.flash("error", "User with that username already exists. Please choose another.");
+  if (errors.isEmpty()) {
+    try {
+      await registerUser(req.body.username, req.body.password, req.body.role);
+      req.flash("success", "Proceed to login.");
+      res.redirect("/login");
+    } catch (e) {
+      req.flash("error", e.message);
+      res.redirect("/register");
+    }
+  } else {
+    req.flash("error", errors.array()[0].msg);
     res.redirect("/register");
   }
 });

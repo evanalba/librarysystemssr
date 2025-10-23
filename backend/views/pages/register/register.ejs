@@ -1,32 +1,47 @@
 <a href="/" class="back-link">&larr; Back to Home</a>
 <main class="register-container">
   <form action="/register" method="POST">
-    <% if (typeof errorMsg === "string" && errorMsg.length > 0) { %>
-      <div class="register-error">
-        <strong>Registration Error:</strong>
-        <%= errorMsg %>
-      </div>
-      <% } %>
-        <div class="register-form-wrapper">
-          <div class="form-floating mb-3">
-            <input type="username" class="form-control" id="floatingInput" placeholder="Username" name="username"
-              required />
-            <label for="floatingInput">Username</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"
-              required />
-            <label for="floatingPassword">Password</label>
-          </div>
-          <div class="form-floating mb-3">
-            <select class="form-select" aria-label="Default select example" name="role" required>
-              <option selected value="">Please choose an option</option>
-              <option value="patron">Patron</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <button class="btn btn-primary w-100 mb-3" type="submit">Register</button>
-          <p>Have an account? <a href="/login">Sign In</a></p>
-        </div>
+    <% if (typeof errorMsg === "string" && errorMsg.length> 0) { %>
+    <div class="register-error">
+      <strong>Registration Error:</strong>
+      <%= errorMsg %>
+    </div>
+    <% } %>
+    <div class="form-floating mb-3">
+      <input
+        type="username"
+        class="form-control"
+        id="floatingInput"
+        placeholder="Username"
+        name="username"
+        required
+      />
+      <label for="floatingInput">Username</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="password"
+        class="form-control"
+        id="floatingPassword"
+        placeholder="Password"
+        name="password"
+        required
+      />
+      <label for="floatingPassword">Password</label>
+    </div>
+    <div class="form-floating mb-3">
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        name="role"
+        required
+      >
+        <option selected value="">Please choose an option</option>
+        <option value="patron">Patron</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <button class="btn btn-primary w-100 mb-3" type="submit">Register</button>
+    <p>Have an account? <a href="/login">Sign In</a></p>
   </form>
 </main>
