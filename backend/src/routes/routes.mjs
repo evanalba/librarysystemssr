@@ -93,20 +93,32 @@ router.get("/login", async (req, res) => {
 //   }
 // }
 
+// TODO
+// 2. Add security on client and server side
+// When you login into to edit a book, it takes us to book list as a admin.
+
 router.get("/register", async (req, res) => {
+  const errorMsg = req.flash('error');
+
   res.render("layouts/main", {
     title: `Home${systemName}`,
     cssPage: "register.css",
     page: `${pagesDir}register/register.ejs`,
+    errorMsg: errorMsg.length > 0 ? errorMsg[0] : null
   });
 });
 
-router.post("/register", async (req, res, next) => {
+router.post("/register", async (req, res) => {
   try {
     await registerUser(req.body.username, req.body.password, req.body.role);
-    res.redirect("/login")
-  } catch (error) {
-    return next(error);
+    res.redirect("/login");
+
+    // req.flash('success', 'Registration successful! Proceed to login.')
+    // res.send(req.flash('success', 'Registration successful! Proceed to login.'));
+    // res.send(JSON.stringify(req.flash('test')));
+  } catch {
+    req.flash("error", "User with that username already exists. Please choose another.");
+    res.redirect("/register");
   }
 });
 

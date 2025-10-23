@@ -11,7 +11,9 @@ export async function registerUser(username, password, role) {
       password: hashedPassword,
       role: role
     })
+
   } catch (e) {
     console.error("Error during user registration:", e.message);
+    throw e;
   }
 }

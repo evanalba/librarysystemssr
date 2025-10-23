@@ -6,6 +6,9 @@ Hypens vs Underscores for image names on website
 TDLR: Use Hypens
 https://webmasters.stackexchange.com/questions/127555/hypens-vs-underscores-for-image-names-on-website 
 
+CRIT: URL structure best practices for Google Search
+https://developers.google.com/search/docs/crawling-indexing/url-structure?hl=en&visit_id=638966875065547045-297040226&rd=1
+
 Packages:
 Mocha - A JavaScript test framework for Node.js programs.
 
@@ -301,5 +304,73 @@ However, you have placed the body parser middleware after your routes are
 loaded, which means Express processes the routes before it tries to read
 the request body, leaving req.body as undefined.
 
-In Express, middleware is executed in the order it is defined.
+**CRIT: In Express, middleware is executed in the order it is defined.**
+
+https://stackoverflow.com/questions/19867599/what-is-the-difference-between-localstorage-sessionstorage-session-and-cookies#19869560
+What is the difference between localStorage, sessionStorage, session and cookies?
+
+HTTP cookie - A small block of data created by a web server that websites
+store on your computer to remember information about your visit, such as
+login details or items in your shopping cart. They help personalize your
+browsing experience and track your activity across the web. Cookies are
+placed on the device used to access a website, and more than one cookie
+may be placed on a user's device during a session.
+
+LocalStorage is for long-term storage, retaining data even after the browser
+is closed, while sessionStorage is temporary and clears data when the tab is
+closed. Cookies are smaller (about 4KB), can be sent to the server with each
+request, and can have expiration dates, making them suitable for session
+management and tracking.
+
+A lot of the pros/cons will be contextual to the situation.
+
+In all cases, these storage mechanisms will be specific to an individual
+browser on an individual computer/device. Any requirement to store data on
+an ongoing basis across sessions will need to involve your application server 
+side - most likely using a database, but possibly XML or a text/CSV file.
+
+LocalStorage, sessionStorage, and cookies are all client storage solutions.
+Session data is held on the server where it remains under your direct control.
+
+TLDR:
+Beware: sessionStorage, localStorage are not appropriate for authentication
+information. They are not automatically sent to the server. This means that
+if a user changes the URL manually, or clicks on HTML links, you will not get
+authentication information. Even if you rewrite HTML links, you are forced to
+pass the authentication information over the URL which is a security no-no.
+At the end of the day, you will be forced to use Cookies.
+See stackoverflow.com/q/26556749/14731 for a related topic.
+
+
+Session - A temporary connection between a client and a server that allows
+for the exchange of information during a user's visit to a website. Sessions
+are often managed using session IDs, which help track user activity and
+maintain state across multiple requests.
+
+#####
+1. express-session creates the user's session object.
+
+2. express-mysql-session ensures that session object is saved to MySQL.
+
+3. connect-flash writes your message (req.flash('success', 'Hi!')) into that 
+session object, and then reads and deletes it on the next request.
+#####
+
+
+**CRIT: express-sessio creates a session using a cookie, but
+it's important to understand what the cookie contains. **
+
+The Session Flow:
+1. First Request: A user visits your site. express-session generates a unique, random string called the Session ID.
+
+2. Cookie Creation: This Session ID is placed into a cookie (often named connect.sid by default) and sent back to the browser in the HTTP response header.
+
+3. Subsequent Requests: The browser automatically sends the Session ID cookie back to the server with every subsequent request.
+
+4. Data Lookup: The express-session middleware intercepts this cookie, reads the Session ID, and uses that ID to retrieve the full, associated session data (which contains all the variables you've stored, like login status or flash messages) from the server's store (MemoryStore, MySQL, Redis, etc.).
+
+CRIT: The cookie itself does NOT contain the session data (like the user's
+name or password). It only contains the Session ID, which acts as a secure,
+temporary key to unlock the data stored safely on your server (e.g., in your
+MySQL database). This separation is a vital security feature.
 

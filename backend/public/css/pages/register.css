@@ -17,4 +17,24 @@ body {
 .register-container {
   background-color: white;
   padding: 30px 30px 0 30px;
+  width: 100%;
+}
+
+@media screen and (min-width: 501px) {
+  .register-container {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 772px) {
+  .register-container {
+    max-width: 695px;
+  }
+}
+
+.register-error {
+  background-color: #f2dede;
+  color: #773231;
+  margin-bottom: 20px;
+  padding: 15px;
 }

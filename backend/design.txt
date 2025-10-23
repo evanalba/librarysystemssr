@@ -1,0 +1,39 @@
+**User agent**
+A user agent is any software that retrieves, renders and facilitates end user
+interaction with Web content, or whose user interface is implemented using
+Web technologies. e.g. Web Browsers
+
+The user agent is the client in a client–server system. The HTTP User-Agent
+header is intended to clearly identify the agent to the server. However, this
+header can be omitted or spoofed, so some websites use other detection
+methods.
+
+**Post/Redirect/Get (Design pattern)** 
+https://en.wikipedia.org/wiki/Post/Redirect/Get
+
+(Solution: Just redirect the user to a different URI. 
+https://stackoverflow.com/questions/50901126/post-redirect-get-in-express-node-js.
+
+https://thenodeway.io/posts/how-to-show-flash-messages-in-node-js/
+
+Flash messages are stored in a session-specific area, designed to hold
+messages temporarily. Once a user views these messages, they are
+automatically cleared from the session. This mechanism is particularly
+effective in combination with page redirects, ensuring that messages are
+displayed promptly on the subsequent page load.)
+
+Lets the page to be shown after the form submitted to be reloaded, shared, or 
+bookmarked without bad effects, such as submitting the form again another time.
+i.e. Resubmits the Post request again.
+
+Instead of responding with content, the server responds to a POST request by
+redirecting the client to another location.
+
+The PRG pattern cannot address every scenario of duplicate form submission.
+For example, if a web user refreshes before the initial submission completes,
+possibly because of server lag, a duplicate POST occurs in certain user agents.
+
+If the user hits refresh, the browser warns them:
+"Are you sure you want to resubmit the form?" If they click yes, the form
+data is submitted again, potentially causing duplicate entries, database 
+conflicts, or unnecessary processing.

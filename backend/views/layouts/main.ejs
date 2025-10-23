@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      <% if (typeof page !== "undefined" && title) { %> <%= title %> <% } else {
-      %> Library Management System <% } %>
-    </title>
-    <link
-      rel="stylesheet"
-      href="/bootstrap-5.3.8/dist/css/custom-bootstrap.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/css/style.css" />
-    <% if (typeof page !== "undefined" && cssPage) { %>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    <% if (typeof page !=="undefined" && title) { %>
+      <%= title %>
+        <% } else { %> Library Management System <% } %>
+  </title>
+  <link rel="stylesheet" href="/bootstrap-5.3.8/dist/css/custom-bootstrap.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <% if (typeof page !=="undefined" && cssPage) { %>
     <link rel="stylesheet" href="/css/pages/<%= cssPage %>" />
     <% } %>
-  </head>
+</head>
+
 <body>
-    <%- typeof page !== "undefined" && page ? include(page) :
-    include("../partials/error.ejs") %>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  <%- typeof page !=="undefined" && page ? include(page) : include("../partials/error.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous"></script>
 </body>
+
 </html>
