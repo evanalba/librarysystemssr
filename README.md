@@ -27,7 +27,7 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
 
 2. Clone this repository and navigate to it:
     ```bash
-    git clone git@github.com:ChicoState/StaySafe.git
+    git@github.com:evanalba/librarysystemssr.git
     cd StaySafe
     ```
 

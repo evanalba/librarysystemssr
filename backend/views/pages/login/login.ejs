@@ -1,11 +1,17 @@
 <a href="/" class="back-link">&larr; Back to Home</a>
 <main class="login-container">
-  <form action="">
+  <form action="/login" method="POST">
     <% if (typeof successMsg === "string" && successMsg.length > 0) { %>
 
     <div class="register-success">
       <strong>Registration successful!</strong>
       <%= successMsg %>
+    </div>
+    <% } %>
+    <% if (typeof errorMsg === "string" && errorMsg.length> 0) { %>
+    <div class="login-error">
+      <strong>Login Error:</strong>
+      <%= errorMsg %>
     </div>
     <% } %>
     <div class="form-floating mb-3">
@@ -15,16 +21,18 @@
         id="floatingInput"
         placeholder="Username"
         name="username"
+        required
       />
       <label for="floatingInput">Username</label>
     </div>
     <div class="form-floating mb-3">
       <input
-        type="text"
+        type="password"
         class="form-control"
         id="floatingPassword"
         placeholder="Password"
         name="password"
+        required
       />
       <label for="floatingPassword">Password</label>
     </div>

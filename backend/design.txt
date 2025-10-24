@@ -37,3 +37,7 @@ If the user hits refresh, the browser warns them:
 "Are you sure you want to resubmit the form?" If they click yes, the form
 data is submitted again, potentially causing duplicate entries, database 
 conflicts, or unnecessary processing.
+
+The asyncHandler pattern comes from a combination of two fundamental software
+design concepts: Higher-Order Functions (Functional) and the Decorator Pattern
+(Object-oriented).
