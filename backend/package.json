@@ -13,6 +13,11 @@
     "test-watch": "nodemon --exec \"npm test\"",
     "test-wait-debuger": "cross-env NODE_ENV=test PORT=8081 mocha --no-timeouts --exit --inspect-brk=0.0.0.0:9230"
   },
+  "prettier": {
+    "plugins": [
+      "@awmottaz/prettier-plugin-void-html"
+    ]
+  },
   "nodemonConfig": {
     "ext": "js, mjs, json, ejs",
     "watch": [
@@ -28,11 +33,12 @@
     "express-mysql-session": "^3.0.3",
     "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
-    "knex": "^0.95.11",
+    "knex": "^1.0.7",
     "morgan": "^1.10.0",
     "mysql2": "^2.1.0"
   },
   "devDependencies": {
+    "@awmottaz/prettier-plugin-void-html": "^1.9.0",
     "@eslint/js": "^9.38.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

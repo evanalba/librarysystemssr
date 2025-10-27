@@ -1,6 +1,7 @@
 import express from "express";
 import myknex from "../database.mjs";
 import { loginUser, registerUser } from "../controllers/user-controller.mjs";
+import getBooks from "../controllers/search-controller.mjs";
 import asyncHandler from "../middleware/async-handler.mjs";
 
 // Server-side Validation for Forms
@@ -27,22 +28,16 @@ router.get("/healthz", (_req, res) => {
   res.send("I am happy and healthy\n");
 });
 
-router.get("/booklist", asyncHandler(async (_req, res) => {
-  const books = await myknex("books").select([
-    "id",
-    "title",
-    "authors",
-    "publication_year",
-    "isbn",
-    "available_copies",
-    "image_url"
-  ]);
+router.get("/booklist", asyncHandler(async (req, res) => {
+  const searchTerm = req.query.q || "";
+  const books = await getBooks(searchTerm); 
 
   res.render("layouts/layout-main", {
     title: `Booklist${systemName}`,
     cssPage: "booklist.css",
     page: `${pagesDir}booklist/booklist.ejs`,
-    books: books
+    books: books,
+    searchTerm: searchTerm
   });
 }));
 
