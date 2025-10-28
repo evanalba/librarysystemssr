@@ -1,13 +1,13 @@
 .navbar-color {
-    background-color: #889E70 !important;
+  background-color: #889e70 !important;
 }
 
 .navbar-toggler {
-    border: none !important;
+  border: none !important;
 }
 
 .navbar-toggler:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 
 .navbar-toggler-icon {
@@ -15,10 +15,24 @@
 }
 
 .nav-href {
-    color: #000000;
-    text-decoration: none;
+  color: #000000;
+  text-decoration: none;
 }
 
 .nav-href:hover {
+  text-decoration: underline;
+}
+
+.logout-btn {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
   text-decoration: underline;
 }

@@ -1,0 +1,43 @@
+.loans-main {
+  margin-left: 0.5%;
+}
+
+.loans {
+  font-size: x-large;
+}
+
+.loan-detail-container {
+  max-width: 98.5%;
+  padding: 5px 5px 5px 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (min-width: 540px) {
+  .loan-detail-container {
+    max-width: 99%;
+    padding: 5px 5px 5px 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .loan-detail-container {
+    max-width: 99.4%;
+    padding: 5px 5px 5px 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.loan-title {
+  font-size: medium;
+}
+
+.authors {
+  font-size: small;
+  margin-bottom: 0;
+}
+
+.due {
+  font-size: small;
+  margin-bottom: 10px;
+}

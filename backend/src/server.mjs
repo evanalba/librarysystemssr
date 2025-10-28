@@ -29,6 +29,7 @@ import flash from "connect-flash";
 // You can get it using import.meta.url and path.dirname.
 import path from "path";
 import { fileURLToPath } from "url";
+import attachUserToLocals from "./middleware/locals-middleware.mjs"
 import router from "./routes/routes.mjs";
 import errorHandler from "./middleware/error-handler.mjs";
 
@@ -39,7 +40,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
     secret: 'just-for-testing',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 86400000 // Session expires after 24 hours
+    }  
 }))
 app.use(flash());
 
@@ -52,6 +56,7 @@ app.set("view engine", "ejs");
 
 // Tell Express where to find your views folder (templates)
 app.set("views", path.join(__dirname, "..", "views"));
+app.use(attachUserToLocals);
 app.use("/", router);
 
 // CRIT: The error handler must be the last middleware loaded!

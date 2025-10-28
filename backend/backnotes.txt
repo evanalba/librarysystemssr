@@ -374,3 +374,8 @@ name or password). It only contains the Session ID, which acts as a secure,
 temporary key to unlock the data stored safely on your server (e.g., in your
 MySQL database). This separation is a vital security feature.
 
+CRIT: NPM: The -D flag, or its longer form --save-dev, is used with the npm
+install command to install a package as a development dependency.
+(i.e. Development Dependencies: These are packages needed only for developing
+and testing your project.)
+(Vice versa: Production Dependencies )

@@ -16,7 +16,7 @@
       rel="stylesheet"
     >
     <link rel="stylesheet" href="/css/style.css">
-    <% if (typeof page !== "undefined" && cssPage) { %>
+    <% if (typeof page !== "undefined" && typeof cssPage !== "undefined" && cssPage) { %>
     <link rel="stylesheet" href="/css/pages/<%= cssPage %>">
     <% } %>
   </head>
@@ -42,7 +42,14 @@
               <a class="nav-href" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-href" href="/login">Log in to your account</a>
+              <% if (user) { %>
+                <span>|&nbsp;&nbsp;<b><%= user.username %> (<%= user.role %>)</b>&nbsp;</span>
+                <form action="/logout" method="POST" style="display: inline;">
+                  <button type="submit" class="logout-btn">Logout</button>
+                </form>
+              <% } else { %>
+                  <a class="nav-href" href="/login">Log in to your account</a>
+              <% } %>
             </li>
           </ul>
         </div>
@@ -55,5 +62,9 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script>
+        // Log the user object to the Chrome DevTools console
+        console.log("User Data from res.locals:", JSON.parse('<%- JSON.stringify(user) %>'));
+    </script>
   </body>
 </html>
