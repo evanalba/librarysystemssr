@@ -94,6 +94,18 @@ router.get(
   }),
 );
 
+router.get(
+  "/adashboard",
+  isAuthenticated,
+  asyncHandler(async (req, res) => {
+    res.render("layouts/layout-main", {
+      title: `Admin Dashboard${systemName}`,
+      cssPage: "admin-dashboard.css",
+      page: `${pagesDir}admin-dashboard/admin-dashboard.ejs`,
+    });
+  }),
+);
+
 router.post("/logout", (req, res, next) => {
   req.session.destroy((e) => {
     if (e) {
@@ -129,7 +141,7 @@ router.post("/login", async (req, res) => {
       username: user.username,
       role: user.role,
     };
-    user.role === "patron" ? res.redirect("/pdashboard") : res.redirect("/");
+    user.role === "patron" ? res.redirect("/pdashboard") : res.redirect("/adashboard");
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/login");
