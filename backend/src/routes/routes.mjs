@@ -1,8 +1,13 @@
 import express from "express";
+// Connect to DB function (i.e. Excludes Credentials)
 import myknex from "../database.mjs";
-import { loginUser, registerUser } from "../controllers/user-controller.mjs";
+// All CRUD functions
+import * as userc from "../controllers/user-controller.mjs";
+// Search Bar function
 import getBooks from "../controllers/search-controller.mjs";
+// Async Error Handler
 import asyncHandler from "../middleware/async-handler.mjs";
+// Session Cookie Id
 import { SESSION_COOKIE_NAME } from "../config.mjs";
 
 // Server-side Validation for Forms
@@ -49,12 +54,20 @@ router.get(
   "/books/:id",
   asyncHandler(async (req, res, next) => {
     const bookId = req.params.id;
-    const book = await myknex("books").where("id", bookId).first();
+    const book = await myknex("books").where({ id: bookId }).first();
 
     if (!book) {
       const err = new Error("Book not found");
       err.status = 404;
-      return next(err);
+      throw err;
+    }
+
+    book.available_copies = await userc.getAvailableCount(bookId);
+    book.total_copies = await userc.getTotalCount(bookId);
+
+    let isLoaned = false;
+    if (req.session.user) {
+      isLoaned = await userc.isCheckedOut(req.session.user.id);
     }
 
     res.render("layouts/layout-main", {
@@ -62,6 +75,25 @@ router.get(
       cssPage: "book-detail.css",
       page: `${pagesDir}book-detail/book-detail.ejs`,
       book: book,
+      checkOutStatus: isLoaned,
+    });
+  }),
+);
+
+router.post(
+  "/checkout/:id",
+  asyncHandler(async (req, res, next) => {
+    // console.log(req.params.id);
+    // console.log("Hello gamers!");
+    // const test = req.params.id;
+    // res.redirect("")
+    // const checkoutSuccess = await checkout req.params.id
+    const checkoutSuccess = await userc.checkout(req.session.user.id, req.params.id);
+
+    res.render("layouts/layout-main", {
+      title: `Home${systemName}`,
+      cssPage: "home.css",
+      page: `${pagesDir}home/home.ejs`,
     });
   }),
 );
@@ -135,13 +167,15 @@ router.get("/login", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const user = await loginUser(req.body.username, req.body.password);
+    const user = await userc.loginUser(req.body.username, req.body.password);
     req.session.user = {
       id: user.id,
       username: user.username,
       role: user.role,
     };
-    user.role === "patron" ? res.redirect("/pdashboard") : res.redirect("/adashboard");
+    user.role === "patron"
+      ? res.redirect("/pdashboard")
+      : res.redirect("/adashboard");
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/login");
@@ -164,7 +198,7 @@ router.post("/register", registerValidationRules, async (req, res) => {
 
   if (errors.isEmpty()) {
     try {
-      await registerUser(req.body.username, req.body.password, req.body.role);
+      await userc.registerUser(req.body.username, req.body.password, req.body.role);
       req.flash("success", "Proceed to login.");
       res.redirect("/login");
     } catch (e) {
