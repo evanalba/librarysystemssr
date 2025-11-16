@@ -40,6 +40,10 @@ router.get(
     const searchTerm = req.query.q || "";
     const books = await getBooks(searchTerm);
 
+    for (const book in books) {
+      books[book].available_copies = await userc.getAvailableCount(books[book].id);
+    }
+
     res.render("layouts/layout-main", {
       title: `Booklist${systemName}`,
       cssPage: "booklist.css",
