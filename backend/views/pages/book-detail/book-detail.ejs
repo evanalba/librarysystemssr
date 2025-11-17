@@ -13,7 +13,7 @@
     <section class="book-content-grid">
       <div class="book-cover">
         <img src="<%= book.image_url || '/images/default-cover.jpg' %>" alt="Cover for <%= book.title %>" width="200"
-          height="250" />
+          height="250">
       </div>
 
       <section>
@@ -47,22 +47,27 @@
         </dl>
 
         <section class="loan-status">
-          <% if (user && book.available_copies > 0 && user.role === "patron" && checkOutStatus === false) { %>
+          <% if (user && book.available_copies> 0 && user.role === "patron" && checkOutStatus === false) { %>
             <p class="loan-status-p">
               Status: <span class="available">Available</span>
             </p>
             <form action="/checkout/<%= book.id %>" method="post">
               <button type="submit" class="btn btn-primary">Check Out</button>
             </form>
-          <% } else if (user && book.available_copies === 0 && user.role === "patron") { %>
-            <p class="loan-status-p">
-            Status: <span class="unavailable">Currently Loaned Out</span>
-            </p>
-            <% } else { %>
+            <% } else if (user && checkOutStatus===true && user.role==="patron" ) { %>
               <p class="loan-status-p">
-                Status: <span class="unavailable">Please sign in as a patron in order to be able to check out this book.</span>
+                Status: <span class="unavailable">You are currently loaning this.</span>
               </p>
-              <% } %>
+              <% } else if (user && book.available_copies===0 && user.role==="patron" ) { %>
+                <p class="loan-status-p">
+                  Status: <span class="unavailable">Currently Loaned Out</span>
+                </p>
+                <% } else { %>
+                  <p class="loan-status-p">
+                    Status: <span class="unavailable">Please sign in as a patron in order to be able to check out this
+                      book.</span>
+                  </p>
+                  <% } %>
         </section>
       </section>
     </section>

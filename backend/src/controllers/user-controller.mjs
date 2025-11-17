@@ -47,9 +47,11 @@ export async function getTotalCount(bookId) {
   return Number(total_count);
 }
 
-export async function isCheckedOut(userId) {
+export async function isCheckedOut(userId, bookId) {
   if (userId) {
-    const checkedOut = await myknex("loans").where({ user_id: userId }).first();
+    const checkedOut = await myknex("loans")
+      .where({ user_id: userId, book_id: bookId })
+      .first();
     if (checkedOut) {
       return true;
     }
@@ -58,28 +60,43 @@ export async function isCheckedOut(userId) {
 }
 
 export async function checkout(userId, bookId) {
-  // Update book copy count down
-  // console.log(((await myknex("books").where({ id: bookId }).select("available_copies"))[0]).available_copies);
-  // console.log(await myknex("books").where({ id: bookId }));
+  const formatToMySQLDate = (dateObject) => {
+    const year = dateObject.getFullYear();
+    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObject.getDate()).padStart(2, "0");
 
-  // await myknex("books")
-  //   .where({ id: bookId })
-  //   .decrement({ available_copies: 1 });
-  // Insert new loan
-  const record = await myknex("books").where({ id: bookId });
+    return `${year}-${month}-${day}`;
+  };
+
   const date = new Date();
-  const formattedDate = date.toLocaleDateString("en-US", {
-    month: "2-digit",
-    day: "2-digit",
-    year: "numeric",
+  const loanDate = formatToMySQLDate(date);
+  const days = 56;
+  date.setDate(date.getDate() + days);
+  const dueDate = formatToMySQLDate(date);
+
+  // Ensures atomicity/consistency
+  await myknex.transaction(async () => {
+    const book = await myknex("books").where({ id: bookId }).first();
+
+    // https://www.dremio.com/wiki/concurrency-control/
+    // For the whole transaction: FOR UPDATE ensures Concurrency Control  
+    const availableCopy = await myknex("copies")
+      .where({ book_id: book.id, status: "Available" })
+      .first()
+      .forUpdate();
+
+    await myknex("loans").insert({
+      user_id: userId,
+      book_id: book.id,
+      copy_id: availableCopy.copy_id,
+      loan_date: loanDate,
+      due_date: dueDate,
+    });
+
+    await myknex("copies").where(availableCopy).update({
+      status: "Checked Out",
+    });
   });
-  // console.log(formattedDate); // Example output: 11/11/2025
 
-  // await myknex("loans").insert({
-  //   user_id : userId,
-  //   book_id : (record[0]).bookId,
-  //   loan_date: formattedDate,
-  //   due_date})
-
-  // const checkout = await myknex("books")
+  return true;
 }

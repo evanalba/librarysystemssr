@@ -1,5 +1,5 @@
 .loans-main {
-  margin-left: 0.5%;
+  margin: 0 0.5% 0 0.5%;
 }
 
 .loans {
@@ -7,24 +7,66 @@
 }
 
 .loan-detail-container {
-  max-width: 98.5%;
   padding: 5px 5px 5px 5px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.register-success {
+  background-color: #d4edda;
+  color: #155624;
+  margin-bottom: 20px;
+  margin: 20px 0 20px 0;
+  padding: 15px;
+}
+
+.login-error {
+  background-color: #f2dede;
+  color: #773231;
+  margin: 20px 0 20px 0;
+  padding: 15px;
+}
+
 @media screen and (min-width: 540px) {
   .loan-detail-container {
-    max-width: 99%;
     padding: 5px 5px 5px 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .register-success {
+    background-color: #d4edda;
+    color: #155624;
+    margin-bottom: 20px;
+    margin: 20px 0 20px 0;
+    padding: 15px;
+  }
+
+  .login-error {
+    background-color: #f2dede;
+    color: #773231;
+    margin: 20px 0 20px 0;
+    padding: 15px;
   }
 }
 
 @media screen and (min-width: 900px) {
   .loan-detail-container {
-    max-width: 99.4%;
     padding: 5px 5px 5px 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .register-success {
+    background-color: #d4edda;
+    color: #155624;
+    margin-bottom: 20px;
+    margin: 20px 0 20px 0;
+    padding: 15px;
+  }
+
+  .login-error {
+    background-color: #f2dede;
+    color: #773231;
+    margin: 20px 0 20px 0;
+    padding: 15px;
   }
 }
 

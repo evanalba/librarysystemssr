@@ -1,4 +1,18 @@
 <main class="loans-main">
+
+  <% if (typeof successMsg === "string" && successMsg.length > 0) { %>
+
+    <div class="register-success">
+      <strong>Success:</strong>
+      <%= successMsg %>
+    </div>
+    <% } %>
+    <% if (typeof errorMsg === "string" && errorMsg.length > 0) { %>
+    <div class="login-error">
+      <strong>Error:</strong>
+      <%= errorMsg %>
+    </div>
+    <% } %>
   <header>
     <h2 class="loans">Loans</h2>
     <p># Loans</p>

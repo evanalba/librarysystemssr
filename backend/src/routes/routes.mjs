@@ -41,7 +41,9 @@ router.get(
     const books = await getBooks(searchTerm);
 
     for (const book in books) {
-      books[book].available_copies = await userc.getAvailableCount(books[book].id);
+      books[book].available_copies = await userc.getAvailableCount(
+        books[book].id,
+      );
     }
 
     res.render("layouts/layout-main", {
@@ -56,7 +58,7 @@ router.get(
 
 router.get(
   "/books/:id",
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const bookId = req.params.id;
     const book = await myknex("books").where({ id: bookId }).first();
 
@@ -71,7 +73,7 @@ router.get(
 
     let isLoaned = false;
     if (req.session.user) {
-      isLoaned = await userc.isCheckedOut(req.session.user.id);
+      isLoaned = await userc.isCheckedOut(req.session.user.id, bookId);
     }
 
     res.render("layouts/layout-main", {
@@ -86,19 +88,19 @@ router.get(
 
 router.post(
   "/checkout/:id",
-  asyncHandler(async (req, res, next) => {
-    // console.log(req.params.id);
-    // console.log("Hello gamers!");
-    // const test = req.params.id;
-    // res.redirect("")
-    // const checkoutSuccess = await checkout req.params.id
-    const checkoutSuccess = await userc.checkout(req.session.user.id, req.params.id);
+  asyncHandler(async (req, res) => {
 
-    res.render("layouts/layout-main", {
-      title: `Home${systemName}`,
-      cssPage: "home.css",
-      page: `${pagesDir}home/home.ejs`,
-    });
+    const checkoutSuccess = await userc.checkout(
+      req.session.user.id,
+      req.params.id,
+    );
+
+    if (checkoutSuccess === true) {
+      req.flash("success", "Checked out successfully!");
+    } else {
+      req.flash("error", "Failed to checkout.");
+    }
+    res.redirect("/pdashboard");
   }),
 );
 
@@ -115,6 +117,8 @@ router.get(
   "/pdashboard",
   isAuthenticated,
   asyncHandler(async (req, res) => {
+    const successMsg = req.flash("success");
+    const errorMsg = req.flash("error");
     // TODO FIX HERE!
     // const userId = req.session.user ? req.session.user.id : null;
 
@@ -125,6 +129,8 @@ router.get(
       title: `Patron Dashboard${systemName}`,
       cssPage: "patron-dashboard.css",
       page: `${pagesDir}patron-dashboard/patron-dashboard.ejs`,
+      successMsg: successMsg.length > 0 ? successMsg[0] : null,
+      errorMsg: errorMsg.length > 0 ? errorMsg[0] : null,
       // TODO borrowed books pass in data
     });
   }),
@@ -202,7 +208,11 @@ router.post("/register", registerValidationRules, async (req, res) => {
 
   if (errors.isEmpty()) {
     try {
-      await userc.registerUser(req.body.username, req.body.password, req.body.role);
+      await userc.registerUser(
+        req.body.username,
+        req.body.password,
+        req.body.role,
+      );
       req.flash("success", "Proceed to login.");
       res.redirect("/login");
     } catch (e) {
