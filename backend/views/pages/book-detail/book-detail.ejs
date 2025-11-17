@@ -56,8 +56,11 @@
             </form>
             <% } else if (user && checkOutStatus===true && user.role==="patron" ) { %>
               <p class="loan-status-p">
-                Status: <span class="unavailable">You are currently loaning this.</span>
-              </p>
+              Status: <span class="available">Loaned</span>
+            </p>
+              <form action="/checkin/<%= book.id %>" method="post">
+                  <button type="submit" class="btn btn-success">Check In</button>
+                </form>
               <% } else if (user && book.available_copies===0 && user.role==="patron" ) { %>
                 <p class="loan-status-p">
                   Status: <span class="unavailable">Currently Loaned Out</span>

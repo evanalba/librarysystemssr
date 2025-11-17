@@ -1,40 +1,43 @@
 <main class="loans-main">
 
-  <% if (typeof successMsg === "string" && successMsg.length > 0) { %>
+  <% if (typeof successMsg==="string" && successMsg.length> 0) { %>
 
     <div class="register-success">
       <strong>Success:</strong>
       <%= successMsg %>
     </div>
     <% } %>
-    <% if (typeof errorMsg === "string" && errorMsg.length > 0) { %>
-    <div class="login-error">
-      <strong>Error:</strong>
-      <%= errorMsg %>
-    </div>
-    <% } %>
-  <header>
-    <h2 class="loans">Loans</h2>
-    <p><%= books.length %> Loans</p>
-  </header>
+      <% if (typeof errorMsg==="string" && errorMsg.length> 0) { %>
+        <div class="login-error">
+          <strong>Error:</strong>
+          <%= errorMsg %>
+        </div>
+        <% } %>
+          <header>
+            <h2 class="loans">Loans</h2>
+            <p>
+              <%= books.length %> Loans
+            </p>
+          </header>
 
-  <% if (books && books.length > 0) { %>
-    <% books.forEach(book => { %>
-      <article class="loan-detail-container">
-        <h3 class="loan-title"><%= book.title %></h3>
-        <p class="authors"><%= book.authors %></p>
-        <img
-          class="loan-img"
-          src="<%= book.image_url %>"
-          alt="<%= book.title %>"
-          width="88"
-          height="110"
-        />
-        <p class="due">Due: <%= book.due_date %></p>
-        <button type="button" class="btn btn-success">Check In</button>
-      </article>
-    <% }); %>
-  <% } else { %>
-  <p class="no-books"><b>No books found in the library.</b></p>
-  <% } %>
+          <% if (books && books.length> 0) { %>
+            <% books.forEach(book=> { %>
+              <article class="loan-detail-container">
+                <h3 class="loan-title">
+                  <%= book.title %>
+                </h3>
+                <p class="authors">
+                  <%= book.authors %>
+                </p>
+                <img class="loan-img" src="<%= book.image_url %>" alt="<%= book.title %>" width="88" height="110" />
+                <p class="due">Due: <%= book.due_date %>
+                </p>
+                <form action="/checkin/<%= book.id %>" method="post">
+                  <button type="submit" class="btn btn-success">Check In</button>
+                </form>
+              </article>
+              <% }); %>
+                <% } else { %>
+                  <p class="no-books"><b>No books found in the library.</b></p>
+                  <% } %>
 </main>

@@ -103,6 +103,22 @@ router.post(
   }),
 );
 
+router.post(
+  "/checkin/:id",
+  asyncHandler(async (req, res) => {
+    const userId = req.session.user.id;
+    const bookId = req.params.id;
+    const checkinSuccess = await userc.checkin(userId, bookId);
+
+    if (checkinSuccess === true) {
+      req.flash("success", "Checked in successfully!");
+    } else {
+      req.flash("error", "Failed to check in.");
+    }
+    res.redirect("/pdashboard");
+  }),
+);
+
 function isAuthenticated(req, res, next) {
   if (req.session.user) {
     next();

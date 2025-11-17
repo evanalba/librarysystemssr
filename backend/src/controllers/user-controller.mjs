@@ -101,6 +101,24 @@ export async function checkout(userId, bookId) {
   return true;
 }
 
+export async function checkin(userId, bookId) {
+  const copy = await myknex("loans")
+    .where({ user_id: userId, book_id: bookId }).first();
+  
+  const affectedRow = await myknex("loans")
+    .where({ user_id: userId, book_id: bookId })
+    .del();
+
+  await myknex("copies")
+    .where({ copy_id: copy.copy_id, book_id: bookId })
+    .update({ status: "Available" });
+
+  if (affectedRow === 1) {
+    return true;
+  }
+  return false;
+}
+
 export async function getBorrowedBooks(userId) {
   const rawBorrowedList = await myknex("loans")
     .where({ user_id: userId })
