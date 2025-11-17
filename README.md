@@ -27,7 +27,7 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
 
 2. Clone this repository and navigate to it:
     ```bash
-    git@github.com:evanalba/librarysystemssr.git
+    git clone git@github.com:evanalba/librarysystemssr.git
     cd librarysystemssr
     ```
 
@@ -37,6 +37,7 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
     ```
 
 4. Access the app via a web browser:
+    http://localhost:80/
     <!-- * Frontend at http://localhost:3000/
     * Backend at http://localhost:8080/ -->
 
