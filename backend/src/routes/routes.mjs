@@ -89,7 +89,6 @@ router.get(
 router.post(
   "/checkout/:id",
   asyncHandler(async (req, res) => {
-
     const checkoutSuccess = await userc.checkout(
       req.session.user.id,
       req.params.id,
@@ -119,11 +118,9 @@ router.get(
   asyncHandler(async (req, res) => {
     const successMsg = req.flash("success");
     const errorMsg = req.flash("error");
-    // TODO FIX HERE!
-    // const userId = req.session.user ? req.session.user.id : null;
+    const userId = req.session.user ? req.session.user.id : null;
 
-    // Fetch data relevant to the specific user (e.g., their borrowed books)
-    // const borrowedBooks = await getBorrowedBooks(user.id);
+    const borrowedBooks = await userc.getBorrowedBooks(userId);
 
     res.render("layouts/layout-main", {
       title: `Patron Dashboard${systemName}`,
@@ -131,7 +128,7 @@ router.get(
       page: `${pagesDir}patron-dashboard/patron-dashboard.ejs`,
       successMsg: successMsg.length > 0 ? successMsg[0] : null,
       errorMsg: errorMsg.length > 0 ? errorMsg[0] : null,
-      // TODO borrowed books pass in data
+      books: borrowedBooks,
     });
   }),
 );

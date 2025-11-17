@@ -7,8 +7,9 @@
 }
 
 .loan-detail-container {
-  padding: 5px 5px 5px 5px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 5px 5px 5px 5px;
+  margin: 20px 0 0 0;
 }
 
 .register-success {
@@ -26,50 +27,6 @@
   padding: 15px;
 }
 
-@media screen and (min-width: 540px) {
-  .loan-detail-container {
-    padding: 5px 5px 5px 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .register-success {
-    background-color: #d4edda;
-    color: #155624;
-    margin-bottom: 20px;
-    margin: 20px 0 20px 0;
-    padding: 15px;
-  }
-
-  .login-error {
-    background-color: #f2dede;
-    color: #773231;
-    margin: 20px 0 20px 0;
-    padding: 15px;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .loan-detail-container {
-    padding: 5px 5px 5px 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .register-success {
-    background-color: #d4edda;
-    color: #155624;
-    margin-bottom: 20px;
-    margin: 20px 0 20px 0;
-    padding: 15px;
-  }
-
-  .login-error {
-    background-color: #f2dede;
-    color: #773231;
-    margin: 20px 0 20px 0;
-    padding: 15px;
-  }
-}
-
 .loan-title {
   font-size: medium;
 }
@@ -77,6 +34,10 @@
 .authors {
   font-size: small;
   margin-bottom: 0;
+}
+
+.loan-img {
+  margin: 5px 0 5px 0;
 }
 
 .due {

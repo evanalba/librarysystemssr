@@ -79,7 +79,7 @@ export async function checkout(userId, bookId) {
     const book = await myknex("books").where({ id: bookId }).first();
 
     // https://www.dremio.com/wiki/concurrency-control/
-    // For the whole transaction: FOR UPDATE ensures Concurrency Control  
+    // For the whole transaction: FOR UPDATE ensures Concurrency Control
     const availableCopy = await myknex("copies")
       .where({ book_id: book.id, status: "Available" })
       .first()
@@ -99,4 +99,27 @@ export async function checkout(userId, bookId) {
   });
 
   return true;
+}
+
+export async function getBorrowedBooks(userId) {
+  const rawBorrowedList = await myknex("loans")
+    .where({ user_id: userId })
+    .join("books", "loans.book_id", "=", "books.id")
+    .select("books.*", "loans.due_date")
+    .orderBy("books.title", "asc");
+
+  if (rawBorrowedList.length === 0) {
+    return [];
+  }
+
+  const finalBorrowedList = rawBorrowedList.map((book) => {
+    book.due_date = new Date(book.due_date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+    return book;
+  });
+
+  return finalBorrowedList;
 }
