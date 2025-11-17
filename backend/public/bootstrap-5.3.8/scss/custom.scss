@@ -16,9 +16,9 @@ $spacers: (
 
 $border-radius: 0;
 
+@import "./bootstrap.scss";
+
 .form-floating > .form-select {
   padding-top: 0;
   padding-bottom: 0;
 }
-
-@import "./bootstrap.scss";

@@ -72,12 +72,12 @@ router.get(
     book.total_copies = await userc.getTotalCount(bookId);
 
     let isLoaned = false;
-    const userId = req.session.user.id;
+    let borrowedBooks = [];
     if (req.session.user) {
+      const userId = req.session.user.id;
       isLoaned = await userc.isCheckedOut(userId, bookId);
-    }
-
-    const borrowedBooks = await userc.getBorrowedBooks(userId);
+      borrowedBooks = await userc.getBorrowedBooks(userId);
+    } 
 
     res.render("layouts/layout-main", {
       title: `${book.title}${systemName}`,

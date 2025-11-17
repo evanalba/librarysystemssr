@@ -1,9 +1,4 @@
 @charset "UTF-8";
-.form-floating > .form-select {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
 /*!
  * Bootstrap  v5.3.8 (https://getbootstrap.com/)
  * Copyright 2011-2025 The Bootstrap Authors
@@ -12254,6 +12249,10 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+.form-floating > .form-select {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /*# sourceMappingURL=custom-bootstrap.css.map */
