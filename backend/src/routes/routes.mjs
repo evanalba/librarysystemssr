@@ -72,9 +72,12 @@ router.get(
     book.total_copies = await userc.getTotalCount(bookId);
 
     let isLoaned = false;
+    const userId = req.session.user.id;
     if (req.session.user) {
-      isLoaned = await userc.isCheckedOut(req.session.user.id, bookId);
+      isLoaned = await userc.isCheckedOut(userId, bookId);
     }
+
+    const borrowedBooks = await userc.getBorrowedBooks(userId);
 
     res.render("layouts/layout-main", {
       title: `${book.title}${systemName}`,
@@ -82,6 +85,7 @@ router.get(
       page: `${pagesDir}book-detail/book-detail.ejs`,
       book: book,
       checkOutStatus: isLoaned,
+      borrowedBooks: borrowedBooks.length,
     });
   }),
 );

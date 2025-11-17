@@ -61,6 +61,10 @@
               <form action="/checkin/<%= book.id %>" method="post">
                   <button type="submit" class="btn btn-success">Check In</button>
                 </form>
+              <% } else if (user && checkOutStatus===false && user.role==="patron" && borrowedBooks === 3) { %>
+                <p class="loan-status-p">
+                  Status: <span class="unavailable">You have reached the limit of books you can check out.</span>
+                </p>
               <% } else if (user && book.available_copies===0 && user.role==="patron" ) { %>
                 <p class="loan-status-p">
                   Status: <span class="unavailable">Currently Loaned Out</span>
