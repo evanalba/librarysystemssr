@@ -71,6 +71,9 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <% if (typeof page !== "undefined" && typeof jsPage !== "undefined" && jsPage) { %>
+      <script src="/js/pages/<%= jsPage %>"></script>
+    <% } %>
     <script>
         // Log the user object to the Chrome DevTools console
         console.log("User Data from res.locals:", JSON.parse('<%- JSON.stringify(user) %>'));

@@ -1,5 +1,6 @@
 $success: #186329 !default;
 $primary: #0250C5 !default;
+$danger: #773231 !default;
 
 $spacer: 1rem !default;
 $spacers: (
@@ -11,8 +12,6 @@ $spacers: (
   5: $spacer * 3,
   84: $spacer * 21,
   ) !default;
-  
-
 
 $border-radius: 0;
 
@@ -22,3 +21,6 @@ $border-radius: 0;
   padding-top: 0;
   padding-bottom: 0;
 }
+
+
+

@@ -77,7 +77,7 @@ router.get(
       const userId = req.session.user.id;
       isLoaned = await userc.isCheckedOut(userId, bookId);
       borrowedBooks = await userc.getBorrowedBooks(userId);
-    } 
+    }
 
     res.render("layouts/layout-main", {
       title: `${book.title}${systemName}`,
@@ -157,12 +157,85 @@ router.get(
   "/adashboard",
   isAuthenticated,
   asyncHandler(async (req, res) => {
+    const successMsg = req.flash("success");
+    const errorMsg = req.flash("error");
+
     res.render("layouts/layout-main", {
       title: `Admin Dashboard${systemName}`,
       cssPage: "admin-dashboard.css",
       page: `${pagesDir}admin-dashboard/admin-dashboard.ejs`,
+      successMsg: successMsg.length > 0 ? successMsg[0] : null,
+      errorMsg: errorMsg.length > 0 ? errorMsg[0] : null,
+      jsPage: "add-copies.js",
     });
   }),
+);
+
+router.post("/books/add", isAuthenticated, asyncHandler(async (req, res, next) => {
+  const {
+    title,
+    authors,
+    publicationYear,
+    isbn,
+    pageCount,
+    imageUrl,
+    copyId,
+    description
+  } = req.body;
+
+  if (!authors || authors.trim().length === 0) {
+    req.flash("error", "Author(s) field cannot be empty.");
+    return res.redirect("/adashboard");
+  }
+
+  const authorsArray = authors
+    .split(',')
+    .map(author => author.trim())
+    .filter(author => author.length > 0);
+
+  if (authorsArray.length === 0) {
+    req.flash("error", "Author(s) format is invalid. Please use a comma to separate names.");
+    return res.redirect("/adashboard");
+  }
+
+  const sanitizedIsbn = isbn.toUpperCase()
+  const numPageCount = parseInt(pageCount);
+
+  try {
+    await myknex.transaction(async (trx) => {
+      const [bookId] = await trx("books").insert({
+        title: title,
+        authors: authorsArray.join(", "),
+        publication_year: publicationYear,
+        isbn: sanitizedIsbn,
+        description: description || null,
+        page_count: numPageCount,
+        image_url: imageUrl,
+      });
+
+      if (Array.isArray(copyId) && copyId.length > 0) {
+        const copyInserts = copyId.map(id => ({
+          copy_id: id.toUpperCase(),
+          book_id: bookId,
+          status: "Available",
+        }));
+
+        await trx("copies").insert(copyInserts);
+      }
+    });
+
+
+    req.flash("success", `Added book "${title}" successfully!`);
+    res.redirect("/adashboard");
+  } catch (e) {
+    if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("isbn")) {    
+      req.flash("error", `${title} with ISBN ${sanitizedIsbn} already exists in the system.`);
+      return res.redirect("/adashboard");
+    }
+
+    return next(e);
+  }
+}),
 );
 
 router.post("/logout", (req, res, next) => {
