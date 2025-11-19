@@ -52,6 +52,7 @@ router.get(
       page: `${pagesDir}booklist/booklist.ejs`,
       books: books,
       searchTerm: searchTerm,
+      jsPage: "book-data.js",
     });
   }),
 );
@@ -89,6 +90,45 @@ router.get(
     });
   }),
 );
+
+router.get("/api/books/:id", isAuthenticated, asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+
+  const book = await myknex("books").where({ id: bookId }).first();
+
+  if (!book) {
+    return res.status(404).json({ message: "Book not found" });
+  }
+
+  book.available_copies = await userc.getAvailableCount(bookId);
+  book.total_copies = await userc.getTotalCount(bookId);
+
+  res.json(book); 
+}));
+
+router.post("/books/edit/:id", isAuthenticated, asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  const editSuccess = await userc.editBook(bookId);
+
+  if (editSuccess === true) {
+    req.flash("success", "Edited successfully!");
+  } else {
+    req.flash("error", "Failed to edit.");
+  }
+  res.redirect("/adashboard");
+}));
+
+router.post("/books/delete/:id", isAuthenticated, asyncHandler(async (req, res) => {
+  const bookId = req.params.id;
+  const deleteSuccess = await userc.delBook(bookId);
+
+  if (deleteSuccess === true) {
+    req.flash("success", "Deleted successfully!");
+  } else {
+    req.flash("error", "Failed to delete.");
+  }
+  res.redirect("/adashboard");
+}));
 
 router.post(
   "/checkout/:id",

@@ -1,33 +1,99 @@
 <h2 class="list-head">Book List</h2>
 
-<% if (books && books.length > 0) { %>
-<table class="table">
-  <tbody>
-    <% books.forEach(book => { %>
-    <tr>
-      <td>
-        <img
-          src="<%= book.image_url %>"
-          alt="<%= book.title %>"
-          width="88"
-          height="110"
-        />
-      </td>
-      <td>
-        <a href="/books/<%= book.id %>"><b><%= book.title %></b></a> <br />
-        <%= book.authors %> <br />
-        <%= book.publication_year %>
-        <br />
-        <% if (book.available_copies > 0) { %>
-            <span class="available">Available</span>
-        <% } else { %>
-            <span class="unavailable">Unavailable</span>
-        <% } %>
-      </td>
-    </tr>
-    <% }); %>
-  </tbody>
-</table>
-<% } else { %>
-<p class="no-books"><b>No books found in the library.</b></p>
-<% } %>
+<% if (books && books.length> 0) { %>
+  <table class="table">
+    <tbody>
+      <% books.forEach(book=> { %>
+        <tr>
+          <td>
+            <img src="<%= book.image_url %>" alt="<%= book.title %>" width="88" height="110" />
+          </td>
+          <td>
+            <a href="/books/<%= book.id %>"><b>
+                <%= book.title %>
+              </b></a> <br />
+            <%= book.authors %> <br />
+              <%= book.publication_year %>
+                <br />
+                <% if (book.available_copies> 0) { %>
+                  <span class="available">Available</span>
+                  <% } else { %>
+                    <span class="unavailable">Unavailable</span>
+                    <% } %>
+          </td>
+          <% if (user && user.role==="admin" ) { %>
+            <td>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" data-book-id="<%= book.id %>">Edit</button>
+              <br>
+              <br>
+              <form action="/books/delete/<%= book.id %>" method="post">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+            <% } %>
+        </tr>
+        <% }); %>
+    </tbody>
+  </table>
+  <% } else { %>
+    <p class="no-books"><b>No books found in the library.</b></p>
+    <% } %>
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content rounded-0">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Edit Book</h1>
+              <button type="button" class="btn-close opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/books/edit/:id" method="POST">
+              <div class="modal-body">
+                <label for="title">Title:</label>
+                <input type="text" name="title" placeholder="Title" required class="p-2 w-100 mb-3" id="title" />
+                <br />
+                <label for="authors">Author(s) (comma-separated):</label>
+                <input type="text" name="authors" placeholder="Author(s) (comma-separated)" required
+                  class="p-2 w-100 mb-3" id="authors" />
+                <br />
+                <label for="publicationYear">Publication Year:</label>
+                <input type="text" name="publicationYear" placeholder="Publication Year" required class="p-2 w-100 mb-3"
+                  id="publicationYear" />
+                <br>
+                <label for="isbn">Enter 10 characters (digits and optional 'X' for ISBN-10) or 13
+                  digits
+                  (ISBN-13):</label>
+                <input type="text" name="isbn" placeholder="ISBN#" required class="p-2 w-100 mb-3" id="isbn"
+                  maxlength="13" pattern="^\d{9}[\dX]$|^\d{13}$" />
+                <br />
+                <label for="pageCount">Page Count:</label>
+
+                <input type="number" name="pageCount" placeholder="Page Count" required class="p-2 w-100 mb-3"
+                  id="pageCount" min="1" />
+                <br />
+                <label for="imageUrl">Book Image URL:</label>
+                <input type="url" name="imageUrl" id="imageUrl" placeholder="https://example.com" pattern="https://.*"
+                  size="30" required class="p-2 w-100 mb-3" />
+                <br>
+                <label for="copies">Number of Copies:</label>
+
+                <input type="number" name="copies" placeholder="Number of Copies" required class="p-2 w-100 mb-3"
+                  id="copies" min="1" />
+                <br />
+                <div id="copyIdInputsContainer"></div>
+                <label for="desc">Description:</label>
+
+                <textarea name="description" placeholder="Description" rows="3" class="p-2 w-100 mb-2"
+                  id="desc"></textarea>
+                <br />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                  Close
+                </button>
+                <button type="submit" class="btn btn-success">Apply changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>

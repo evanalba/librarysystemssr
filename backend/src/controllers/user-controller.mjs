@@ -47,6 +47,36 @@ export async function getTotalCount(bookId) {
   return Number(total_count);
 }
 
+export async function editBook(bookId) {
+  // console.log(bookId);
+  // try {
+  //   await myknex.transaction(async function (trx) {
+  //     await trx("loans").where({ book_id: bookId }).del();
+  //     await trx("copies").where({ book_id: bookId }).del();
+  //     await trx("books").where({ id: bookId }).del();
+  //   });
+
+  //   return true;
+  // } catch {
+  //   return false;
+  // }
+  return false;
+}
+
+export async function delBook(bookId) {
+  try {
+    await myknex.transaction(async function (trx) {
+      await trx("loans").where({ book_id: bookId }).del();
+      await trx("copies").where({ book_id: bookId }).del();
+      await trx("books").where({ id: bookId }).del();
+    });
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function isCheckedOut(userId, bookId) {
   if (userId) {
     const checkedOut = await myknex("loans")
@@ -104,7 +134,7 @@ export async function checkout(userId, bookId) {
 export async function checkin(userId, bookId) {
   const copy = await myknex("loans")
     .where({ user_id: userId, book_id: bookId }).first();
-  
+
   const affectedRow = await myknex("loans")
     .where({ user_id: userId, book_id: bookId })
     .del();
