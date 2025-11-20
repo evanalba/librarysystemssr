@@ -206,12 +206,19 @@ router.get(
       page: `${pagesDir}admin-dashboard/admin-dashboard.ejs`,
       successMsg: successMsg.length > 0 ? successMsg[0] : null,
       errorMsg: errorMsg.length > 0 ? errorMsg[0] : null,
-      jsPage: "add-copies.js",
+      jsPage: "add-copies.mjs",
     });
   }),
 );
 
+router.get("/api/copies/exists/:id", isAuthenticated, asyncHandler(async (req, res) => {
+  const copyId = req.params.id;
+  console.log(copyId);
+  //
+}),);
+
 router.post("/books/add", isAuthenticated, asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   const {
     title,
     authors,
@@ -270,6 +277,10 @@ router.post("/books/add", isAuthenticated, asyncHandler(async (req, res, next) =
   } catch (e) {
     if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("isbn")) {    
       req.flash("error", `${title} with ISBN ${sanitizedIsbn} already exists in the system.`);
+      return res.redirect("/adashboard");
+    } else if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("copies")) {
+      console.log(e);
+      req.flash("error", `${title} with a specific copy id already exists in the system.`);
       return res.redirect("/adashboard");
     }
 

@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
-document.addEventListener("DOMContentLoaded", function() {
+// import { initializeEditModal } from "./book-data.js"; // ⬅️ Import the named function
+
+document.addEventListener("DOMContentLoaded", () => {
     const copiesInput = document.getElementById("copies");
     const container = document.getElementById("copyIdInputsContainer");
 
@@ -13,11 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         for (let i = 1; i <= numCopies; i++) {
             const copyDiv = document.createElement("div");
-            copyDiv.classList.add('mb-3');
-
-            const label = document.createElement("label");
-            label.textContent = `Copy ID ${i}:`;
-            label.htmlFor = `copyId-${i}`;
+            copyDiv.classList.add("form-floating", "mb-3");
 
             const input = document.createElement("input");
             input.type = "text";
@@ -26,13 +24,18 @@ document.addEventListener("DOMContentLoaded", function() {
             input.placeholder = `Copy ID (e.g. C12345) for Copy ${i}`;
             input.required = true;
             input.maxLength = 6;
-            input.classList.add("p-2", "w-100");
+            input.classList.add("form-control");
 
-            copyDiv.appendChild(label);
+            const label = document.createElement("label");
+            label.htmlFor = `copyId-${i}`;
+            label.textContent = `Copy ID ${i}:`;
+
             copyDiv.appendChild(input);            
+            copyDiv.appendChild(label);
             container.appendChild(copyDiv);
         }
     }
 
     copiesInput.addEventListener("input", generateCopyIdInputs);
+    // initializeEditModal();
 });
