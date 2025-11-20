@@ -13,5 +13,15 @@
 }
 
 .add-book {
-    margin: 10px 0 0 10px;
+  margin: 10px 0 0 10px;
+}
+
+.book-foot {
+  padding-bottom: 0px;
+  padding-right: 0px;
+
+}
+
+.apply-changes {
+  margin-right: 0px;
 }

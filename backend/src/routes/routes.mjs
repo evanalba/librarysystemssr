@@ -52,7 +52,7 @@ router.get(
       page: `${pagesDir}booklist/booklist.ejs`,
       books: books,
       searchTerm: searchTerm,
-      jsPage: "book-data.js",
+      jsPage: "book-data.mjs",
     });
   }),
 );
@@ -213,8 +213,14 @@ router.get(
 
 router.get("/api/copies/exists/:id", isAuthenticated, asyncHandler(async (req, res) => {
   const copyId = req.params.id;
-  console.log(copyId);
-  //
+
+  const existingCopy = await myknex("copies")
+      .where("copy_id", copyId)
+      .first();
+
+  const exists = !!existingCopy; 
+
+  res.json({ exists: exists });
 }),);
 
 router.post("/books/add", isAuthenticated, asyncHandler(async (req, res, next) => {

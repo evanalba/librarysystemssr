@@ -23,8 +23,8 @@
           </td>
           <% if (user && user.role==="admin" ) { %>
             <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" data-book-id="<%= book.id %>">Edit</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                data-book-id="<%= book.id %>">Edit</button>
               <br>
               <br>
               <form action="/books/delete/<%= book.id %>" method="post">
@@ -40,6 +40,8 @@
     <p class="no-books"><b>No books found in the library.</b></p>
     <% } %>
 
+<%- include('path/to/your/template.ejs') %>
+
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content rounded-0">
@@ -49,50 +51,59 @@
             </div>
             <form action="/books/edit/:id" method="POST">
               <div class="modal-body">
-                <label for="title">Title:</label>
-                <input type="text" name="title" placeholder="Title" required class="p-2 w-100 mb-3" id="title" />
-                <br />
-                <label for="authors">Author(s) (comma-separated):</label>
-                <input type="text" name="authors" placeholder="Author(s) (comma-separated)" required
-                  class="p-2 w-100 mb-3" id="authors" />
-                <br />
-                <label for="publicationYear">Publication Year:</label>
-                <input type="text" name="publicationYear" placeholder="Publication Year" required class="p-2 w-100 mb-3"
-                  id="publicationYear" />
-                <br>
-                <label for="isbn">Enter 10 characters (digits and optional 'X' for ISBN-10) or 13
-                  digits
-                  (ISBN-13):</label>
-                <input type="text" name="isbn" placeholder="ISBN#" required class="p-2 w-100 mb-3" id="isbn"
-                  maxlength="13" pattern="^\d{9}[\dX]$|^\d{13}$" />
-                <br />
-                <label for="pageCount">Page Count:</label>
+                <div class="form-floating mb-3">
+                  <input type="text" name="title" class="form-control" id="title" placeholder="Title">
+                  <label for="title">Title</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" name="authors" class="form-control" id="authors" name="authors"
+                    placeholder="Author(s) (comma-separated)" required>
+                  <label for="authors">Author(s) (comma-separated)</label>
+                </div>
 
-                <input type="number" name="pageCount" placeholder="Page Count" required class="p-2 w-100 mb-3"
-                  id="pageCount" min="1" />
-                <br />
-                <label for="imageUrl">Book Image URL:</label>
-                <input type="url" name="imageUrl" id="imageUrl" placeholder="https://example.com" pattern="https://.*"
-                  size="30" required class="p-2 w-100 mb-3" />
-                <br>
-                <label for="copies">Number of Copies:</label>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="publicationYear" name="publicationYear"
+                    placeholder="Publication Year" required>
+                  <label for="publicationYear">Publication Year</label>
+                </div>
 
-                <input type="number" name="copies" placeholder="Number of Copies" required class="p-2 w-100 mb-3"
-                  id="copies" min="1" />
-                <br />
-                <div id="copyIdInputsContainer"></div>
-                <label for="desc">Description:</label>
+                <div class="form-floating mb-3">
+                  <input type="text" name="isbn" class="form-control" id="isbn" placeholder="ISBN#" required
+                    maxlength="13" pattern="^\d{9}[\dX]$|^\d{13}$">
+                  <label for="isbn">Enter 10 or 13 digits (or 'X' for ISBN-10)</label>
+                </div>
 
-                <textarea name="description" placeholder="Description" rows="3" class="p-2 w-100 mb-2"
-                  id="desc"></textarea>
-                <br />
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                  Close
-                </button>
-                <button type="submit" class="btn btn-success">Apply changes</button>
-              </div>
+                <div class="form-floating mb-3">
+                  <input type="number" name="pageCount" class="form-control" id="pageCount" name="pageCount"
+                    placeholder="Page Count" required min="1">
+                  <label for="pageCount">Page Count</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input type="url" name="imageUrl" class="form-control" id="imageUrl" name="imageUrl"
+                    placeholder="https://example.com" pattern="https://.*" required>
+                  <label for="imageUrl">Book Image URL</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input type="number" name="copies" class="form-control" id="copies" name="copies"
+                    placeholder="Number of Copies" required min="1">
+                  <label for="copies">Number of Copies</label>
+                </div>
+
+                <div id="copyIdInputsContainer" class="mb-3"></div>
+
+                <div class="form-floating mb-3">
+                  <textarea class="form-control" id="desc" name="description" placeholder="Description"
+                    style="height: 100px;"></textarea>
+                  <label for="desc">Description</label>
+                </div>
+                <div class="modal-footer book-foot">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-success apply-changes">Apply changes</button>
+                </div>
             </form>
           </div>
         </div>

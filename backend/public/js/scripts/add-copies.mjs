@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// import { initializeEditModal } from "./book-data.js"; // ⬅️ Import the named function
+import { initializeCopyIdValidation } from "./validate-copy-ids.mjs"; 
 
 document.addEventListener("DOMContentLoaded", () => {
     const copiesInput = document.getElementById("copies");
@@ -37,5 +37,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     copiesInput.addEventListener("input", generateCopyIdInputs);
-    // initializeEditModal();
+    initializeCopyIdValidation();
 });
