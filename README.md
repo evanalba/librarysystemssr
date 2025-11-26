@@ -81,10 +81,8 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
     * Backend at http://localhost:8080/ -->
 
 ## Environment Troubleshooting
-    ```bash
     docker compose down -v 
     docker compose up 
-    ```
  
 ## Standards
 ECMAScript: [ES6 (2015)](https://262.ecma-international.org/6.0/)  

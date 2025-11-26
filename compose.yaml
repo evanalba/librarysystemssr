@@ -45,7 +45,9 @@ services:
     networks:
       - private
     environment:
-      - LANG=C.UTF-8
+      - LANG=C.UTF-8 # CRIT: Causes the mysql client to assume the utf8 
+      # encoding. Due to Cyrillic chars or special chars are being changed to
+      # special non sense characters at init, using docker-compose.
       - MYSQL_DATABASE=librarysystemssr
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
     healthcheck: 
