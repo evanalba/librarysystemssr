@@ -10,6 +10,7 @@ export const database = {
   password: process.env.DATABASE_PASSWORD
     ? readFileSync(process.env.DATABASE_PASSWORD, "utf8").trim()
     : null,
+  charset: "utf8mb4",
 };
 
 // If you're not using docker compose for local development, this will default to 8080

@@ -1,3 +1,14 @@
+-- 1. Create the Database (if it doesn't exist)
+CREATE DATABASE IF NOT EXISTS librarysystemssr
+    CHARACTER SET utf8mb4 
+    COLLATE utf8mb4_unicode_ci;
+
+-- 2. Select the Database
+USE librarysystemssr;
+
+-- 3. Set Connection Encoding (Crucial for accented characters like "Béla")
+SET NAMES utf8mb4;
+
 CREATE TABLE `books` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,

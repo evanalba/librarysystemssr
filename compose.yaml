@@ -28,7 +28,8 @@ services:
       - public
       - private
     depends_on:
-      - db
+      db:
+        condition: service_healthy 
   db:
     image: mysql:8.4.6
     platform: linux/amd64
@@ -40,12 +41,19 @@ services:
       - db-password
     volumes:
       - db-data:/var/lib/mysql
-      - ./db:/docker-entrypoint-initdb.d
+      - ./db/init:/docker-entrypoint-initdb.d
     networks:
       - private
     environment:
+      - LANG=C.UTF-8
       - MYSQL_DATABASE=librarysystemssr
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    healthcheck: 
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=$MYSQL_ROOT_PASSWORD_FILE"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 networks:
   public:
   private:

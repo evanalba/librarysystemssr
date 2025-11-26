@@ -80,7 +80,12 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
     <!-- * Frontend at http://localhost:3000/
     * Backend at http://localhost:8080/ -->
 
-
+## Environment Troubleshooting
+    ```bash
+    docker compose down -v 
+    docker compose up 
+    ```
+ 
 ## Standards
 ECMAScript: [ES6 (2015)](https://262.ecma-international.org/6.0/)  
 Linter: [ESLint](https://eslint.org/) (Using the recommended config from @eslint/js)  
