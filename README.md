@@ -1,5 +1,43 @@
 # Library Management System
-A library management system that uses server-side rendering. (See [paper]())
+A library management system that uses server-side rendering. (See [paper (PDF)]())
+
+There are 6 books included by default with the setup.
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author(s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><em>Gidget</em></td>
+      <td>Frederick Kohner</td>
+    </tr>
+    <tr>
+      <td><em>Modern graph theory</em></td>
+      <td>Béla Bollobás</td>
+    </tr>
+    <tr>
+      <td><em>Monumentos nacionales de la República de Cuba</em></td>
+      <td>Iris del Pilar Gorostola Pérez (Editor), 
+Nilson Acosta Reyes (Compiler), Cuba Comisión Nacional de Monumentos (Issuing body), 
+Consejo Nacional de Patrimonio Cultural (Cuba) (Issuing body)</td>
+    </tr>
+    <tr>
+      <td><em>No ordinary genius : the illustrated Richard Feynman</em></td>
+      <td>Richard P. Feynman, Christopher Sykes</td>
+    </tr>
+    <tr>
+      <td><em>Secrets of the Borland C++ masters</em></td>
+      <td>Ed Mitchell</td>
+    </tr>
+    <tr>
+      <td><em>The practice of programming</em></td>
+      <td>Brian W. Kernighan, Rob Pike</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Table of Contents
 * [Accessibility](#Accessibility)
@@ -33,6 +71,7 @@ Bootstrap, Express.js, MySQL, Embedded JavaScript, and Node.js. (BEMEN)
 
 3. Build and start the containers.
     ```bash
+    docker compose build
     docker compose up 
     ```
 

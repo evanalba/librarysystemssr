@@ -379,3 +379,24 @@ install command to install a package as a development dependency.
 (i.e. Development Dependencies: These are packages needed only for developing
 and testing your project.)
 (Vice versa: Production Dependencies )
+
+Request Object. (i.e. key 'session' of class instance 'Session')
+req : session: Session
+
+GOAT: Show Table Full details command:
+SHOW CREATE TABLE books;
+
+CRIT: JavaScript Unpack from Object or Arrays
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring 
+
+C00000
+C1 
+
+The actual date on which the borrowed item was successfully checked back into
+the system by the borrower.
+
+
+COOL: When multiple HTML input elements share the exact same $\text{name}$ attribute,
+such as copyId[], and they are part of a form that is submitted, their values
+are typically sent to the server as an array or list of values under that
+single name.

@@ -47,20 +47,12 @@ export async function getTotalCount(bookId) {
   return Number(total_count);
 }
 
-export async function editBook(bookId) {
-  // console.log(bookId);
-  // try {
-  //   await myknex.transaction(async function (trx) {
-  //     await trx("loans").where({ book_id: bookId }).del();
-  //     await trx("copies").where({ book_id: bookId }).del();
-  //     await trx("books").where({ id: bookId }).del();
-  //   });
+export async function getCopies(bookId) {
+  const copyIdsArray = await myknex("copies")
+    .where({ book_id: bookId })
+    .pluck("copy_id");
 
-  //   return true;
-  // } catch {
-  //   return false;
-  // }
-  return false;
+  return copyIdsArray;
 }
 
 export async function delBook(bookId) {
@@ -72,7 +64,8 @@ export async function delBook(bookId) {
     });
 
     return true;
-  } catch {
+  } catch (e) {
+    console.log(e.message);
     return false;
   }
 }

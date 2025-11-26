@@ -1,3 +1,9 @@
+Official Docker images for databases (like postgres, mysql, mariadb) contain
+an entrypoint script that is executed when the container starts for the first
+time. This script checks a specific directory inside the container, usually
+/docker-entrypoint-initdb.d/
+
+
 The MySQL Docker entrypoint executes the initialization scripts **sequentially by name order**.
 
 When the MySQL container starts for the first time, its initialization script
@@ -57,48 +63,8 @@ https://stackoverflow.com/questions/219569/best-database-field-type-for-a-url
 // Docs: https://dbml.dbdiagram.io/docs
 // Playground: https://dbdiagram.io/d
 
-use librarysystemssr;
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,       -- Set size for cryptographic hash
-    role VARCHAR(50) NOT NULL
-);
 
-CREATE TABLE books (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    authors VARCHAR(500) NOT NULL,
-    publication_year YEAR NOT NULL,
-    isbn VARCHAR(17) UNIQUE NOT NULL,
-    description TEXT,
-    page_count INT NOT NULL,
-    available_copies INT NOT NULL DEFAULT 0,
-    total_copies INT NOT NULL DEFAULT 0,
-    image_url VARCHAR(2083)
-);
-
-CREATE TABLE loans (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-
-    -- Foreign Key to the users table (Who borrowed the book)
-    user_id INT NOT NULL,
-    
-    -- Foreign Key to the books table (Which book title was borrowed)
-    book_id INT NOT NULL,
-    
-    loan_date DATE NOT NULL,
-    due_date DATE NOT NULL,
-    return_date DATE, -- Allowed to be NULL for active loans
-    
-    -- Foreign Key Constraints: ON DELETE RESTRICT prevents deleting a 
-    -- user or book if an active loan record exists.
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
-    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE RESTRICT
-);
-
-10 Books:
 1. 
 title VARCHAR(255) NOT NULL, The practice of programming
 authors VARCHAR(500) NOT NULL, Brian W. Kernighan, Rob Pike
@@ -190,9 +156,9 @@ INSERT INTO books (
     image_url
 ) VALUES (
     'No ordinary genius : the illustrated Richard Feynman',
-    'Richard P. Feynman, Christopher Sykes',
-    1994,
-    '9780393036213',
+    'Ed Mitchell',
+    1992,
+    '9780672301377',
     'If Richard Feynman had not existed it would not be possible to create him. The most extraordinary scientist of his time, a unique combination of dazzling intellect and touching simplicity, Feynman had a passion for physics that was merely the Nobel Prize-winning part of an immense love of life and everything it could offer. He was hugely irreverent and always completely honest - with himself, with his colleagues, and with nature. "People say to me, \'Are you looking for the ultimate laws of physics?\' No, I\'m not. I\'m just looking to find out more about the world, and if it turns out there is a simple ultimate law that explains everything, so be it. That would be very nice to discover. If it turns out it\'s like an onion with millions of layers, and we\'re sick and tired of looking at layers, then that\'s the way it is ... My interest in science is to simply find out more about the world, and the more I find out the better it is. I like to find out."',
     272,
     1,
@@ -250,4 +216,5 @@ INSERT INTO books (
     1,
     'https://coverart.oclc.org/ImageWebSvc/oclc/+-+99566938_140.jpg?allowDefault=false&client=WorldcatOrgUI'
 );
+
 

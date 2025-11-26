@@ -1,4 +1,9 @@
 /* eslint-disable no-undef */
+
+/* Create new input CopyID input boxes based on total the number of copies 
+the book should have. */
+
+// Report to user if Copy Ids are valid
 import { initializeCopyIdValidation } from "./validate-copy-ids.mjs"; 
 
 document.addEventListener("DOMContentLoaded", () => {

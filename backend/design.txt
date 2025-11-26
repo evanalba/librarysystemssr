@@ -41,3 +41,60 @@ conflicts, or unnecessary processing.
 The asyncHandler pattern comes from a combination of two fundamental software
 design concepts: Higher-Order Functions (Functional) and the Decorator Pattern
 (Object-oriented).
+
+**Understanding the Foreign Key Relationship**
+The Foreign Key is defined on the child table (copies) and
+references the parent table (books).
+
+Parent Table: books (contains the id of the title).
+
+Child Table: copies (contains the book_id, which is the Foreign Key).
+
+The rule enforced by this link is: A row cannot be inserted into the copies
+table unless its book_id already exists as an id in the books table.
+
+*Deleting a Row in copies*
+To delete a row in the copies table, you only need to know the primary key
+of that row, which would be the copy_id (or whatever primary key you defined
+for the copies table).
+
+**Restriction: Deleting a Row in books**
+The Foreign Key relationship does create a restriction when you try
+to delete a row in the parent table (books):
+
+You cannot delete a book (title) if there are still existing copies
+that reference it.
+
+If you try to delete the entry for The Great Gatsby from the books table,
+the database will throw an error if there are still rows in the copies
+table that have a book_id pointing to it.
+
+This prevents orphan records—copies that belong to a book title that no longer exists.
+
+What to do when deleting a row in books:
+1. Delete the associated rows in copies first:
+
+2. Define a CASCADE action on the Foreign Key: This tells the database to
+automatically delete the associated child rows in copies whenever the parent
+row in books is deleted. This is done when you set up the table schema.
+
+**CRIT: When you define a Foreign Key using the safest default, like ON**
+DELETE RESTRICT (or if you don't specify any action, which often defaults
+to this), the database strictly enforces referential integrity:
+
+The database will prevent you from deleting a row (a book title)
+from the parent table (books) if there are any referencing rows (copies)
+in the child table (copies).
+
+GOAT: "ON" SQL Keyword Data Integrity
+
+CRIT:
+A key concept in JavaScript: the difference between a const variable binding
+and the mutability of the object it references.
+
+The code is allowed because const only prevents you from reassigning the
+variable itself, but it does not prevent you from modifying the contents
+(properties) of the object the variable points to.
+
+Think of book as a const signpost pointing to a specific house in memory.
+( Like a pointer!! )

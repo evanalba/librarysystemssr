@@ -13,6 +13,7 @@ import { SESSION_COOKIE_NAME } from "../config.mjs";
 // Server-side Validation for Forms
 import { validationResult } from "express-validator";
 import { registerValidationRules } from "../validation/auth.mjs";
+import { isAllUppercase } from "../../public/js/scripts/validate-copy-ids.mjs";
 
 const router = express.Router();
 const systemName = " | Library Management System";
@@ -102,20 +103,129 @@ router.get("/api/books/:id", isAuthenticated, asyncHandler(async (req, res) => {
 
   book.available_copies = await userc.getAvailableCount(bookId);
   book.total_copies = await userc.getTotalCount(bookId);
+  book.copy_ids = await userc.getCopies(bookId);
 
-  res.json(book); 
+  res.json(book);
 }));
 
-router.post("/books/edit/:id", isAuthenticated, asyncHandler(async (req, res) => {
-  const bookId = req.params.id;
-  const editSuccess = await userc.editBook(bookId);
+router.post("/books/edit/:id", isAuthenticated, asyncHandler(async (req, res, next) => {
+  const {
+    title,
+    authors,
+    publicationYear,
+    isbn,
+    pageCount,
+    imageUrl,
+    copyId,
+    description
+  } = req.body;
 
-  if (editSuccess === true) {
-    req.flash("success", "Edited successfully!");
-  } else {
-    req.flash("error", "Failed to edit.");
+  if (!authors || authors.trim().length === 0) {
+    req.flash("error", "Author(s) field cannot be empty.");
+    return res.redirect("/adashboard");
   }
-  res.redirect("/adashboard");
+
+  const authorsArray = authors
+    .split(',')
+    .map(author => author.trim())
+    .filter(author => author.length > 0);
+
+  if (authorsArray.length === 0) {
+    req.flash("error", "Author(s) format is invalid. Please use a comma to separate names.");
+    return res.redirect("/adashboard");
+  }
+
+  const bookId = req.params.id;
+  const sanitizedIsbn = isbn.toUpperCase()
+  const numPageCount = parseInt(pageCount);
+
+  const incomingCopyIds = Array.isArray(copyId) 
+      ? copyId.map(id => id.trim()).filter(id => id.length > 0 && id !== "UNDEFINED" && isAllUppercase(id)) 
+      : (copyId ? [copyId.trim()] : []);
+
+  if (copyId.length !== incomingCopyIds.length) {
+    req.flash("error", `You did not fill in all the Copy ID fields.`);
+    return res.redirect("/adashboard");
+  }
+
+  // BEST: Way to do Transactions
+  await myknex.transaction(async (trx) => {
+    try {
+      const existingBook = await trx("books")
+        .where("isbn", sanitizedIsbn)
+        .whereNot("id", bookId)
+        .forUpdate()
+        .first();
+
+      if (existingBook) {
+        throw new Error("Duplicate isbn detected. This isbn is already assigned to another book.");
+      }
+
+      const record = await trx("books").where("id", bookId).forUpdate().first();
+
+      if (record) {
+        await trx("books").where("id", bookId).update({
+          title: title,
+          authors: authorsArray.join(", "),
+          publication_year: publicationYear,
+          isbn: sanitizedIsbn,
+          description: description || null,
+          page_count: numPageCount,
+          image_url: imageUrl,
+        });
+      } else {
+        throw new Error("Book record not found for update.");
+      }
+
+      const existingCopyRecords = await trx("copies").where({ book_id: bookId }).select("copy_id");
+      const existingDbIds = new Set(existingCopyRecords.map(r => r.copy_id));
+
+      const toInsert = [];
+      const incomingIdsSet = new Set(incomingCopyIds);
+
+      const toDelete = Array.from(existingDbIds).filter(dbId => !incomingIdsSet.has(dbId));
+      
+      for (const incomingId of incomingCopyIds) {
+          if (!existingDbIds.has(incomingId)) {
+              toInsert.push(incomingId);
+          }
+      }
+
+      console.log('Book ID:', bookId);
+      console.log('Incoming Copy IDs:', incomingCopyIds);
+      console.log('Existing DB IDs:', Array.from(existingDbIds));
+      console.log('TO DELETE:', toDelete);
+      console.log('TO INSERT:', toInsert);
+
+      if (toDelete.length > 0) {
+          await trx("copies").whereIn("copy_id", toDelete).del();
+      }
+
+      if (toInsert.length > 0) {
+          const newCopyRecords = toInsert.map(id => ({
+              book_id: bookId,
+              copy_id: id,
+              status: "Available", 
+          }));
+          await trx("copies").insert(newCopyRecords);
+      }
+
+      await trx.commit();
+      req.flash("success", `Edited book "${title}" successfully!`);
+      res.redirect("/adashboard");
+    } catch (e) {
+      await trx.rollback();
+      if (e.message.includes("isbn")) {
+        req.flash("error", `ISBN ${sanitizedIsbn} in "${title}" already exists in the system.`);
+        return res.redirect("/adashboard");
+      } else if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("copies")) {
+        req.flash("error", `Another book already owns copy id you submitted in the system.`);
+        return res.redirect("/adashboard");
+      }
+
+      return next(e);
+    }
+  });
 }));
 
 router.post("/books/delete/:id", isAuthenticated, asyncHandler(async (req, res) => {
@@ -215,10 +325,10 @@ router.get("/api/copies/exists/:id", isAuthenticated, asyncHandler(async (req, r
   const copyId = req.params.id;
 
   const existingCopy = await myknex("copies")
-      .where("copy_id", copyId)
-      .first();
+    .where("copy_id", copyId)
+    .first();
 
-  const exists = !!existingCopy; 
+  const exists = !!existingCopy;
 
   res.json({ exists: exists });
 }),);
@@ -281,7 +391,7 @@ router.post("/books/add", isAuthenticated, asyncHandler(async (req, res, next) =
     req.flash("success", `Added book "${title}" successfully!`);
     res.redirect("/adashboard");
   } catch (e) {
-    if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("isbn")) {    
+    if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("isbn")) {
       req.flash("error", `${title} with ISBN ${sanitizedIsbn} already exists in the system.`);
       return res.redirect("/adashboard");
     } else if (e.code === "ER_DUP_ENTRY" && e.sqlMessage.includes("copies")) {

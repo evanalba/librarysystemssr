@@ -14,3 +14,17 @@
   color: #A91E2C;
 }
 
+.admin-btns {
+  text-align: right;
+  padding-right: 45px !important;
+}
+
+.book-foot {
+  padding-bottom: 0px;
+  padding-right: 0px;
+
+}
+
+.apply-changes {
+  margin-right: 0px;
+}
