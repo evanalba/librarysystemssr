@@ -39,6 +39,8 @@ Consejo Nacional de Patrimonio Cultural (Cuba) (Issuing body)</td>
   </tbody>
 </table>
 
+Note: For testing purposes, the database's password is located in `db/password.txt`.
+
 ## Table of Contents
 * [Accessibility](#Accessibility)
 * [Software Stack](#Software-Stack)

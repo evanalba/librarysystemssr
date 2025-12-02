@@ -9,21 +9,29 @@ function isDuplicateInForm(value) {
   let isValid = true;
   let feedbackMessage = "";
 
+  if (value === "") {
+    isValid = false;
+    feedbackMessage = "This Copy ID cannot be empty.";
+    return [isValid, feedbackMessage];
+  } else if (!isAllUppercase(value)) {
+    isValid = false;
+    feedbackMessage = "This Copy ID is not uppercased.";
+    return [isValid, feedbackMessage];
+  }
+
   const container = document.getElementById("copyIdInputsContainer");
   const allInputs = container.querySelectorAll("input[name='copyId[]']");
+  let count = 0;
   allInputs.forEach((otherInput) => {
     if (otherInput.value.trim() === value) {
-      isValid = false;
-      feedbackMessage = "This Copy ID is duplicated in the form above.";
-
-      return [isValid, feedbackMessage];
-    } else if (!isAllUppercase(otherInput.value.trim())) {
-      isValid = false;
-      feedbackMessage = "This Copy ID is not uppercased.";
-
-      return [isValid, feedbackMessage];
+      count++;
     }
   });
+
+  if (count > 1) {
+    isValid = false;
+    feedbackMessage = "This Copy ID is duplicated in the form.";
+  }
 
   return [isValid, feedbackMessage];
 }
@@ -96,7 +104,7 @@ function validateCopyId(input) {
   let isValid = true;
   let feedbackMessage = "";
 
-  const value = input.value.trim().toUpperCase();
+  const value = input.value.trim();
   [isValid, feedbackMessage] = isDuplicateInForm(value);
 
   if (!isValid) {
@@ -115,14 +123,44 @@ function validateCopyId(input) {
 export function initializeCopyIdValidation() {
   const callback = (mutationsList) => {
     for (const mutation of mutationsList) {
-      const input = mutation.addedNodes[0].querySelector(
-        "input[name='copyId[]']"
-      );
-      if (input) {
-        input.addEventListener("input", () => {
-          validateCopyId(input);
-        });
+      // if (mutation.type == "childList") {
+      //   // console.log("HELLO!");
+      //   // console.log(mutation);
+      //   // console.log();
+      //   const input = mutation.addedNodes[0].querySelector(
+      //   "input[name='copyId[]']"
+      //   );
+      //   if (input) {
+      //     input.addEventListener("input", () => {
+      //       validateCopyId(input);
+      //     });
+      //   }
+      // }
+      for (let i = 0; i < mutation.addedNodes.length; i++) {
+        if (mutation.addedNodes[i] instanceof Element) {
+          const input = mutation.addedNodes[i].querySelector("input[name='copyId[]']");
+          if (input) {
+            input.addEventListener("input", () => {
+              validateCopyId(input);
+            });
+          }
+        }
+        // console.log(mutation.addedNodes[i]);
+        // console.log(mutation.addedNodes[i].querySelector("input[name='copyId[]']"));
       }
+
+      // const input = mutation.addedNodes[0].querySelector(
+      //   "input[name='copyId[]']"
+      //   );
+      //   if (input) {
+      //     input.addEventListener("input", () => {
+      //       validateCopyId(input);
+      //     });
+      //   }
+      // console.log("PIG!");
+      //   console.log(mutation);
+      //   console.log();
+      
     }
   };
 
