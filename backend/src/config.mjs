@@ -1,13 +1,10 @@
 // A Centralized place to store credentials for configuration of services
 // e.g. Database Client credentials
-import { readFileSync } from "node:fs";
 
 export const database = {
   socketPath: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
   user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD
-    ? readFileSync(process.env.DATABASE_PASSWORD, "utf8").trim()
-    : null,
+  password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DB,
   charset: "utf8mb4",
 };
