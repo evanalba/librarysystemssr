@@ -31,17 +31,3 @@ COPY . /code
 # using node here is still more graceful stopping then npm with --init afaik
 # I still can't come up with a good production way to run with npm and graceful shutdown
 CMD [ "node", "src/index.mjs" ]
-
-FROM development AS dev-envs
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
-
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
