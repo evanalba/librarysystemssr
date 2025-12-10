@@ -3,13 +3,12 @@
 import { readFileSync } from "node:fs";
 
 export const database = {
-  host: process.env.DATABASE_HOST || "localhost",
-  port: process.env.DATABASE_PORT,
-  database: process.env.DATABASE_DB,
+  socketPath: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD
     ? readFileSync(process.env.DATABASE_PASSWORD, "utf8").trim()
     : null,
+  database: process.env.DATABASE_DB,
   charset: "utf8mb4",
 };
 
