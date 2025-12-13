@@ -47,7 +47,7 @@
         </dl>
 
         <section class="loan-status">
-          <% if (user && book.available_copies> 0 && user.role === "patron" && checkOutStatus === false) { %>
+          <% if (user && book.available_copies> 0 && user.role === "patron" && checkOutStatus === false && borrowedBooks < 3) { %>
             <p class="loan-status-p">
               Status: <span class="available">Available</span>
             </p>
